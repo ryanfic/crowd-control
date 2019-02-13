@@ -24,7 +24,19 @@ public class PoliceLineController : MonoBehaviour
     {
         Vector3 leftside = GetComponent<LineRenderer>().GetPosition(0);
         Vector3 rightside = GetComponent<LineRenderer>().GetPosition(1);
-        float xlength = rightside.x - leftside.x;
+        float length = Vector3.Distance(rightside,leftside);
+        int count = 0;
+        for(float i = 0; i <= length; i += 2*police.GetComponent<CapsuleCollider>().radius)
+        {
+            //Makes the relative position an interpolation (lerp) with the fraction i (i is count diameters away from the left position)
+            Vector3 relativepos = Vector3.Lerp(leftside,rightside, i/length); 
+            Vector3 spawnLocation = new Vector3(relativepos.x+transform.localPosition.x,relativepos.y+transform.localPosition.y,relativepos.z+transform.localPosition.z);
+            Quaternion spawnRotation = Quaternion.identity;
+            GameObject p = Instantiate(police,spawnLocation,spawnRotation,this.transform);
+            p.GetComponent<PoliceController>().PoliceNum=count;
+            count++;
+        }
+        /*float xlength = rightside.x - leftside.x;
         int count = 0;
         for(float i = leftside.x; i<= rightside.x; i += 2*police.GetComponent<CapsuleCollider>().radius )
         {
@@ -33,16 +45,46 @@ public class PoliceLineController : MonoBehaviour
             GameObject p = Instantiate(police,spawnLocation,spawnRotation,this.transform);
             p.GetComponent<PoliceController>().PoliceNum=count;
             count++;
-        }
+        } */
     }
-    public void setTargetPosition()
+    public void targetNearestBusStop(GameObject[] stops)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        GameObject targetStop = getNearestBusStop(stops);
+        setTargetPosition(targetStop.transform.position);
+        //setTargetPosition(targetStop.transform.position);
+        //targetPosition = hit.point;
+
+        //makes a target direction for the policeline to look at (using the ray x and z, but keeping the policeline's y value)
+        //lookAtTarget = new Vector3(targetPosition.x - transform.position.x, transform.position.y,targetPosition.z - transform.position.z);
+        //the rotation to the new target
+        //lineRot = Quaternion.LookRotation(lookAtTarget);
+        //set moving to true
+        //moving = true;
+    }
+
+    private GameObject getNearestBusStop(GameObject[] stops)
+    {
+        float shortestdistance = Mathf.Infinity;
+        GameObject closeststop = null;
+        foreach(GameObject stop in stops)
+        {
+            if(stop.gameObject.tag == "BusStop" && Vector3.Distance(stop.transform.position,transform.position) < shortestdistance)
+            {
+                shortestdistance = Vector3.Distance(stop.transform.position,transform.position);
+                closeststop = stop;
+            }
+        }
+        return closeststop;
+    }
+    public void targetMousePosition(Camera cam)
+    {
+        Ray ray = /*Camera.main */cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if(Physics.Raycast(ray, out hit, 100))
         {
-            targetPosition = hit.point;
+            setTargetPosition(hit.point);
+            /* targetPosition = hit.point;
             //Snaps policeline to target
             //this.transform.LookAt(targetPosition);
 
@@ -51,8 +93,21 @@ public class PoliceLineController : MonoBehaviour
             //the rotation to the new target
             lineRot = Quaternion.LookRotation(lookAtTarget);
             //set moving to true
-            moving = true;
+            moving = true;*/
         }
+    }
+    private void setTargetPosition(Vector3 targetpos)
+    {
+        targetPosition = targetpos;
+        //Snaps policeline to target
+        //this.transform.LookAt(targetPosition);
+
+        //makes a target direction for the policeline to look at (using the ray x and z, but keeping the policeline's y value)
+        lookAtTarget = new Vector3(targetPosition.x - transform.position.x, transform.position.y,targetPosition.z - transform.position.z);
+        //the rotation to the new target
+        lineRot = Quaternion.LookRotation(lookAtTarget);
+        //set moving to true
+        moving = true;
     }
 
     public bool isMoving()
