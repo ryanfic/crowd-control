@@ -24,6 +24,7 @@ public class PoliceLineController : MonoBehaviour
     {
         Vector3 leftside = GetComponent<LineRenderer>().GetPosition(0);
         Vector3 rightside = GetComponent<LineRenderer>().GetPosition(1);
+        
         float length = Vector3.Distance(rightside,leftside);
         int count = 0;
         for(float i = 0; i <= length; i += 2*police.GetComponent<CapsuleCollider>().radius)
@@ -47,7 +48,7 @@ public class PoliceLineController : MonoBehaviour
             count++;
         } */
     }
-    public void targetNearestBusStop(GameObject[] stops)
+    public void targetNearestBusStop(List<GameObject> stops)
     {
         GameObject targetStop = getNearestBusStop(stops);
         setTargetPosition(targetStop.transform.position);
@@ -62,7 +63,7 @@ public class PoliceLineController : MonoBehaviour
         //moving = true;
     }
 
-    private GameObject getNearestBusStop(GameObject[] stops)
+    private GameObject getNearestBusStop(List<GameObject> stops)
     {
         float shortestdistance = Mathf.Infinity;
         GameObject closeststop = null;

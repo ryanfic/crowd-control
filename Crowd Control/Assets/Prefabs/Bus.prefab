@@ -119,4 +119,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   capacity: 0
-  maxcapacity: 1
+  maxcapacity: 5

@@ -15,8 +15,9 @@ public class SimulationController : MonoBehaviour
     public List<GameObject> crowdlist;
     public int crowdtot = 0;
 
-    public GameObject BusStop;
-    public GameObject[] BusStops;
+    public GameObject BusStoptemplate;
+    public List<GameObject> BusStops;
+    public int stopstot = 0;
 
     private PoliceLineController plcontroller;
 
@@ -34,7 +35,7 @@ public class SimulationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
         {
             if(makingPL)
             {
@@ -102,6 +103,22 @@ public class SimulationController : MonoBehaviour
 				}
 			}
 		}
+        if(Input.GetKeyDown("i")) 
+        {
+            resetPLPoint();
+			Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+
+			if(Physics.Raycast(ray, out hit)) {
+
+				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
+
+					Debug.Log("Bus Stop created.");
+                    Vector3 spawnLocation = new Vector3(hit.point.x,0.01f,hit.point.z);
+					addBusStop(spawnLocation);
+				}
+			}
+		}
         if(Input.GetKeyDown("p"))
         {
             makingPL = true;
@@ -122,8 +139,17 @@ public class SimulationController : MonoBehaviour
         Vector3 spawnLocation = Vector3.Lerp(PLpoint[0],PLpoint[1],0.5f);
         Quaternion spawnRotation = Quaternion.identity;
         GameObject line = Instantiate(PoliceLinetemplate, spawnLocation, spawnRotation);
+        line.GetComponent<LineRenderer>().SetPositions(PLpoint);
         PoliceLines.Add(line);
         pltot++;
+    }
+
+    void addBusStop(Vector3 pos)
+    {
+        Quaternion spawnRotation = Quaternion.identity;
+        GameObject busstop = Instantiate(BusStoptemplate, pos, spawnRotation);
+        BusStops.Add(busstop);
+        stopstot++;
     }
 
     void resetPLPoint()
@@ -135,4 +161,5 @@ public class SimulationController : MonoBehaviour
         }
         PLpointcount = 0;
     }
+
 }
