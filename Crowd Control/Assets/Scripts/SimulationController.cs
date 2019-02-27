@@ -29,6 +29,7 @@ public class SimulationController : MonoBehaviour
     void Start()
     {
         plcontroller = PoliceLinetemplate.GetComponent<PoliceLineController>();
+
         
     }
 
@@ -160,7 +161,7 @@ public class SimulationController : MonoBehaviour
         print("Result: " + result);
         return result;
     }
-    void addBusStop(Vector3 pos)
+    public void addBusStop(Vector3 pos)
     {
         Quaternion spawnRotation = Quaternion.identity;
         GameObject busstop = Instantiate(BusStoptemplate, pos, spawnRotation);

@@ -361,6 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c9b3869f47a9f4ca9743665ddf69f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surface: {fileID: 1642842403}
+  SimController: {fileID: 1547954083}
   wall: {fileID: 5824525702290447526, guid: b144038e581b0a0478af89d45bece5c5, type: 3}
   policeline: {fileID: 7063431192109482145, guid: efd03bbaf160a234999e5025fbe55096,
     type: 3}
@@ -701,8 +703,7 @@ MonoBehaviour:
   crowdtot: 0
   BusStoptemplate: {fileID: 7056145886617336719, guid: 39d26f7615b26ed44b2ed65c26f6f5c6,
     type: 3}
-  BusStops:
-  - {fileID: 0}
+  BusStops: []
   stopstot: 0
   PLpoint:
   - {x: 0, y: 0, z: 0}
@@ -719,6 +720,7 @@ GameObject:
   - component: {fileID: 1642842402}
   - component: {fileID: 1642842401}
   - component: {fileID: 1642842400}
+  - component: {fileID: 1642842403}
   - component: {fileID: 1642842399}
   m_Layer: 0
   m_Name: Floor
@@ -800,3 +802,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1642842403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642842398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 1.6666666
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}

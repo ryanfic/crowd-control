@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class LevelGenerator : MonoBehaviour
 {
     public NavMeshSurface surface;
+
+    public GameObject SimController;
     private int width = 200;
     private int height = 200;
 
@@ -40,14 +42,16 @@ public class LevelGenerator : MonoBehaviour
                 else if (!plSpawned)
                 {
                     Vector3 pos = new Vector3(x-width/2f, 1.25f, y-height/2f);
-                    Instantiate(policeline, pos, Quaternion.identity);
+
+                    SimController.GetComponent<SimulationController>().PoliceLine = Instantiate(policeline, pos, Quaternion.identity);
                     plSpawned = true;
                     
                 }
                 else if(!bsSpawned && x>170)
                 {
                     Vector3 pos = new Vector3(x-width/2f, 0f, y-height/2f);
-                    Instantiate(BusStop, pos, Quaternion.identity);
+                    SimController.GetComponent<SimulationController>().addBusStop(pos);
+                    //Instantiate(BusStop, pos, Quaternion.identity);
                     bsSpawned = true;
                 }
             }
