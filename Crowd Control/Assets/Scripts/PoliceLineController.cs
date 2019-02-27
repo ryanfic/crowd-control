@@ -20,9 +20,9 @@ public class PoliceLineController : MonoBehaviour
     {
         SpawnPolice();
         agent = GetComponent<NavMeshAgent>();
-        Vector3 pos = transform.position;
-        pos.y = 0;
-        transform.position = pos;
+        //Vector3 pos = transform.position;
+        //pos.y = 0;
+        //transform.position = pos;
     }
 
     private void SpawnPolice()
@@ -95,7 +95,6 @@ public class PoliceLineController : MonoBehaviour
 
             if(hit.collider.tag == "Ground"||hit.collider.tag =="BusStop"){
                 //setTargetPosition(hit.point);
-
                 AgentMove(hit.point);
             }
             
@@ -147,7 +146,7 @@ public class PoliceLineController : MonoBehaviour
 
     public void AgentMove(Vector3 targetpos)
     {
-        Debug.Log("Moving");
+        //Debug.Log("Moving");
         agent.SetDestination(targetpos);
     }
 }
