@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour
         Vector3 destination = origin;
 
         //If middle mouse button is pressed down
-        if(Input.GetMouseButton(2)/*Input.GetKey(KeyCode.LeftControl) */)
+        if(Input.GetMouseButton(2)||Input.GetKey(KeyCode.LeftControl) )
         {
             destination.x -= Input.GetAxis("Mouse Y") * rotateAmount;
             destination.y += Input.GetAxis("Mouse X") * rotateAmount;

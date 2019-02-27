@@ -45,14 +45,15 @@ public class SimulationController : MonoBehaviour
 			    if(Physics.Raycast(ray, out hit))
                 {
                     PLpoint[PLpointcount] = hit.point;
+                    print(PLpoint[PLpointcount]);
                     PLpointcount++;
                 }
                 if(PLpointcount == 2)
                 {
                     addPL();
-                    print(PLpointcount);
+                    //print(PLpointcount);
                     resetPLPoint();
-                    print(PLpointcount);
+                    //print(PLpointcount);
                 }
             }
             else
@@ -66,7 +67,7 @@ public class SimulationController : MonoBehaviour
             
             //PoliceLine.GetComponent<PoliceLineController>().Move();
         }
-        foreach(GameObject line in PoliceLines)
+        /*foreach(GameObject line in PoliceLines)
         {
                     if(line.GetComponent<PoliceLineController>().isMoving())
                     {
@@ -77,7 +78,7 @@ public class SimulationController : MonoBehaviour
         {
 
             PoliceLine.GetComponent<PoliceLineController>().Move();
-        }
+        }*/
         if(Input.GetKeyDown("n"))
         {
             resetPLPoint();
@@ -137,13 +138,28 @@ public class SimulationController : MonoBehaviour
     void addPL()
     {
         Vector3 spawnLocation = Vector3.Lerp(PLpoint[0],PLpoint[1],0.5f);
-        Quaternion spawnRotation = Quaternion.identity;
+        
+        Quaternion spawnRotation; /*= Quaternion.identity; */
+        spawnRotation = Quaternion.LookRotation(getNormal2D(PLpoint[0],PLpoint[1]));
+        print("Angle: " + spawnRotation);
         GameObject line = Instantiate(PoliceLinetemplate, spawnLocation, spawnRotation);
         line.GetComponent<LineRenderer>().SetPositions(PLpoint);
         PoliceLines.Add(line);
         pltot++;
     }
 
+    //Gets the left hand normal from two points, assuming that they are in a 2d plane on Y
+    //Normal is from the midpoint of the two points
+    private Vector3 getNormal2D(Vector3 p1, Vector3 p2)
+    {
+        Vector3 norm = p1-p2;
+        norm.y=0;
+        norm.x=-norm.x;
+        Vector3 result = Vector3.Lerp(p1,p2,0.5f);
+        result = result+norm;
+        print("Result: " + result);
+        return result;
+    }
     void addBusStop(Vector3 pos)
     {
         Quaternion spawnRotation = Quaternion.identity;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PoliceLineController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PoliceLineController : MonoBehaviour
     public float speed = 10;
     Vector3 lookAtTarget;
     Quaternion lineRot;
+    private NavMeshAgent agent;
     private bool moving = false;
 
 
@@ -17,7 +19,10 @@ public class PoliceLineController : MonoBehaviour
     void Start()
     {
         SpawnPolice();
-        
+        agent = GetComponent<NavMeshAgent>();
+        Vector3 pos = transform.position;
+        pos.y = 0;
+        transform.position = pos;
     }
 
     private void SpawnPolice()
@@ -31,7 +36,7 @@ public class PoliceLineController : MonoBehaviour
         {
             //Makes the relative position an interpolation (lerp) with the fraction i (i is count diameters away from the left position)
             Vector3 relativepos = Vector3.Lerp(leftside,rightside, i/length); 
-            Vector3 spawnLocation = new Vector3(relativepos.x+transform.localPosition.x,relativepos.y+transform.localPosition.y,relativepos.z+transform.localPosition.z);
+            Vector3 spawnLocation = new Vector3(relativepos.x+transform.localPosition.x,relativepos.y+transform.localPosition.y+1,relativepos.z+transform.localPosition.z);
             Quaternion spawnRotation = Quaternion.identity;
             GameObject p = Instantiate(police,spawnLocation,spawnRotation,this.transform);
             p.GetComponent<PoliceController>().PoliceNum=count;
@@ -51,7 +56,10 @@ public class PoliceLineController : MonoBehaviour
     public void targetNearestBusStop(List<GameObject> stops)
     {
         GameObject targetStop = getNearestBusStop(stops);
-        setTargetPosition(targetStop.transform.position);
+        AgentMove(targetStop.transform.position);
+        //Using my movement method
+        //setTargetPosition(targetStop.transform.position);
+        
         //setTargetPosition(targetStop.transform.position);
         //targetPosition = hit.point;
 
@@ -84,7 +92,14 @@ public class PoliceLineController : MonoBehaviour
 
         if(Physics.Raycast(ray, out hit, 100))
         {
-            setTargetPosition(hit.point);
+
+            if(hit.collider.tag == "Ground"||hit.collider.tag =="BusStop"){
+                //setTargetPosition(hit.point);
+
+                AgentMove(hit.point);
+            }
+            
+
             /* targetPosition = hit.point;
             //Snaps policeline to target
             //this.transform.LookAt(targetPosition);
@@ -128,5 +143,11 @@ public class PoliceLineController : MonoBehaviour
         {
             moving = false;
         }
+    }
+
+    public void AgentMove(Vector3 targetpos)
+    {
+        Debug.Log("Moving");
+        agent.SetDestination(targetpos);
     }
 }

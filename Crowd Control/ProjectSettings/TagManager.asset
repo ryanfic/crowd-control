@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bus
   - BusStop
+  - Ground
   layers:
   - Default
   - TransparentFX
