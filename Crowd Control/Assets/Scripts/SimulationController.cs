@@ -36,7 +36,7 @@ public class SimulationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        /*f(Input.GetMouseButtonDown(0))
         {
             if(makingPL)
             {
@@ -94,16 +94,19 @@ public class SimulationController : MonoBehaviour
             resetPLPoint();
 			Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
-
+            Physics.Raycast(ray, out hit);
 			if(Physics.Raycast(ray, out hit)) {
 
 				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
 
 					Debug.Log("Crowd agent created.");
-                    Vector3 spawnLocation = new Vector3(hit.point.x,1,hit.point.z);
+                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y,hit.point.z);
 					addCrowd(spawnLocation);
 				}
 			}
+            else{
+                Debug.Log("didnt hit");
+            }
 		}
         if(Input.GetKeyDown("i")) 
         {
@@ -116,7 +119,7 @@ public class SimulationController : MonoBehaviour
 				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
 
 					Debug.Log("Bus Stop created.");
-                    Vector3 spawnLocation = new Vector3(hit.point.x,0.01f,hit.point.z);
+                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y,hit.point.z);
 					addBusStop(spawnLocation);
 				}
 			}

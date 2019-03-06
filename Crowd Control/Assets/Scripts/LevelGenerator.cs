@@ -36,12 +36,12 @@ public class LevelGenerator : MonoBehaviour
             {
                 if(Random.value > 0.7f)
                 {
-                    Vector3 pos = new Vector3(x-width/2f, 1.25f,y - height/2f);
+                    Vector3 pos = new Vector3(x-width/2f, 101.25f,y - height/2f);
                     Instantiate(wall, pos, Quaternion.identity,transform);
                 }
                 else if (!plSpawned)
                 {
-                    Vector3 pos = new Vector3(x-width/2f, 1.25f, y-height/2f);
+                    Vector3 pos = new Vector3(x-width/2f, 101.25f, y-height/2f);
 
                     SimController.GetComponent<SimulationController>().PoliceLine = Instantiate(policeline, pos, Quaternion.identity);
                     plSpawned = true;
@@ -49,7 +49,7 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else if(!bsSpawned && x>170)
                 {
-                    Vector3 pos = new Vector3(x-width/2f, 0f, y-height/2f);
+                    Vector3 pos = new Vector3(x-width/2f, 100f, y-height/2f);
                     SimController.GetComponent<SimulationController>().addBusStop(pos);
                     //Instantiate(BusStop, pos, Quaternion.identity);
                     bsSpawned = true;
