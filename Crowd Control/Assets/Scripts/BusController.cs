@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BusController : MonoBehaviour
+public class BusController : TransitController
 {
-    public int capacity; //number of people on bus
+    /* public int capacity; //number of people on bus
     public int maxcapacity; //maximum number of people allowed on bus
 
     public bool atMaxCapacity()
@@ -17,5 +17,5 @@ public class BusController : MonoBehaviour
     public void getOn()
     {
         capacity++;
-    }
+    }*/
 }

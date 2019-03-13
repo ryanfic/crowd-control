@@ -43,7 +43,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(x-width/2f, 101.25f, y-height/2f);
 
-                    SimController.GetComponent<SimulationController>().PoliceLine = Instantiate(policeline, pos, Quaternion.identity);
+                    SimController.GetComponent<SimulationController>().PoliceLinetemplate = Instantiate(policeline, pos, Quaternion.identity);
                     plSpawned = true;
                     
                 }

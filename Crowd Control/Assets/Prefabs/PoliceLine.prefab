@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7063431192109482144}
   - component: {fileID: 7063431192109482146}
   - component: {fileID: 244000297531309796}
+  - component: {fileID: 3329967583772376038}
   m_Layer: 0
   m_Name: PoliceLine
   m_TagString: Untagged
@@ -154,7 +155,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 5
-  m_Speed: 10
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -166,3 +167,16 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &3329967583772376038
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7063431192109482145}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.2, y: 2, z: 2}
+  m_Center: {x: 0, y: 1, z: 0}

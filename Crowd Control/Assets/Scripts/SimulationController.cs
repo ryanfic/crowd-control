@@ -9,7 +9,7 @@ public class SimulationController : MonoBehaviour
     public GameObject PoliceLinetemplate;
     public List<GameObject> PoliceLines;
     public int pltot = 0;
-    public GameObject PoliceLine;
+
 
     public GameObject crowdtemplate;
     public List<GameObject> crowdlist;
@@ -25,11 +25,19 @@ public class SimulationController : MonoBehaviour
     public Vector3[] PLpoint = new Vector3[2];
     public int PLpointcount = 0;
 
+    private TransitStopGenerator transitGenerator;
+
     // Start is called before the first frame update
     void Start()
     {
+        transitGenerator = gameObject.GetComponent<TransitStopGenerator>();
         plcontroller = PoliceLinetemplate.GetComponent<PoliceLineController>();
-
+        List<GameObject> l = transitGenerator.GenerateStops();
+        foreach(GameObject stop in l)
+        {
+            BusStops.Add(stop);
+            stopstot++;
+        }
         
     }
 
@@ -86,9 +94,6 @@ public class SimulationController : MonoBehaviour
             foreach(GameObject line in PoliceLines)
             {
                     line.GetComponent<PoliceLineController>().targetNearestBusStop(BusStops);
-            }
-            if(PoliceLine){
-                PoliceLine.GetComponent<PoliceLineController>().targetNearestBusStop(BusStops);
             }
         }
         if(Input.GetKeyDown("o")) 

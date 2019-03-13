@@ -119,5 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa1800f7d0374546a90f023c987b63d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BusTemplate: {fileID: 609870007263998501, guid: ddbec6b8e4934e34bb2033ba6a8636fe,
+  TransitTemplate: {fileID: 609870007263998501, guid: ddbec6b8e4934e34bb2033ba6a8636fe,
     type: 3}
+  spawnFrequency: 3
+  transitWaitTime: 0

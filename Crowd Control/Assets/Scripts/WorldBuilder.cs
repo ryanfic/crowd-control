@@ -20,12 +20,6 @@ public class WorldBuilder : MonoBehaviour {
 		firstBuild = true;
 		Invoke("buildTheMesh",1.5f);
 		Invoke("attachMeshColliders",1.5f);
-		/*foreach(MeshRenderer mesh in humanSurface.GetComponentsInChildren<MeshRenderer>)
-		{
-			buildings.AddComponent<NavMeshModifier>();
-		} */
-	
-		//StartCoroutine(ExecuteAfterTime(5));
 	}
 	// Update is called once per frame
 	/*void Update () {

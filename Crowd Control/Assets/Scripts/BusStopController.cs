@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BusStopController : MonoBehaviour
+public class BusStopController : TransitStopController
 {
-    public GameObject BusTemplate;
+    /*public GameObject BusTemplate;
     public float spawnFrequency = 3f;
     public float busWaitTime = 5f;
 
@@ -14,13 +14,13 @@ public class BusStopController : MonoBehaviour
         //InvokeRepeating("SpawnBus", spawnTime+busWaitTime, spawnTime+busWaitTime)
         Vector3 spawnLocation = new Vector3(transform.localPosition.x,transform.localPosition.y+1,transform.localPosition.z);
         Quaternion spawnRotation = Quaternion.identity;
-        /* Bus = */Instantiate(BusTemplate, spawnLocation, spawnRotation);
+        Instantiate(BusTemplate, spawnLocation, spawnRotation);
     }
 
-    void SpawnBus()
+    public void SpawnBus()
     {
         Vector3 spawnLocation = new Vector3(transform.localPosition.x,transform.localPosition.y+1,transform.localPosition.z);
         Quaternion spawnRotation = Quaternion.identity;
         Instantiate(BusTemplate, spawnLocation, spawnRotation);
-    }
+    }*/
 }

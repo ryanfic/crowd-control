@@ -9,6 +9,7 @@ public class PoliceLineController : MonoBehaviour
     public Vector3 targetPosition;
     public float rotSpeed = 5;
     public float speed = 10;
+    public float overlap = 0.1f;
     Vector3 lookAtTarget;
     Quaternion lineRot;
     private NavMeshAgent agent;
@@ -32,7 +33,7 @@ public class PoliceLineController : MonoBehaviour
         
         float length = Vector3.Distance(rightside,leftside);
         int count = 0;
-        for(float i = 0; i <= length; i += 2*police.GetComponent<CapsuleCollider>().radius)
+        for(float i = 0; i <= length; i += (2*police.GetComponent<CapsuleCollider>().radius-overlap))
         {
             //Makes the relative position an interpolation (lerp) with the fraction i (i is count diameters away from the left position)
             Vector3 relativepos = Vector3.Lerp(leftside,rightside, i/length); 
