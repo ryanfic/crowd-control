@@ -5,12 +5,22 @@ using UnityEngine;
 public class BusStopController : MonoBehaviour
 {
     public GameObject BusTemplate;
-    //public GameObject Bus;
+    public float spawnFrequency = 3f;
+    public float busWaitTime = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 spawnLocation = new Vector3(transform.localPosition.x,1,transform.localPosition.z);
+        //InvokeRepeating("SpawnBus", spawnTime+busWaitTime, spawnTime+busWaitTime)
+        Vector3 spawnLocation = new Vector3(transform.localPosition.x,transform.localPosition.y+1,transform.localPosition.z);
         Quaternion spawnRotation = Quaternion.identity;
         /* Bus = */Instantiate(BusTemplate, spawnLocation, spawnRotation);
+    }
+
+    void SpawnBus()
+    {
+        Vector3 spawnLocation = new Vector3(transform.localPosition.x,transform.localPosition.y+1,transform.localPosition.z);
+        Quaternion spawnRotation = Quaternion.identity;
+        Instantiate(BusTemplate, spawnLocation, spawnRotation);
     }
 }

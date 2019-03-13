@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEditor;
 
-// A class for building the NavMeshSurface durig run-time.
+// A class for building the NavMeshSurface and colliders durig run-time.
 
-public class NavMeshBuilder : MonoBehaviour {
+public class WorldBuilder : MonoBehaviour {
 
 	public NavMeshSurface humanSurface;
 	public NavMeshSurface vehicleSurface;
@@ -18,11 +18,17 @@ public class NavMeshBuilder : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		firstBuild = true;
+		Invoke("buildTheMesh",1.5f);
+		Invoke("attachMeshColliders",1.5f);
+		/*foreach(MeshRenderer mesh in humanSurface.GetComponentsInChildren<MeshRenderer>)
+		{
+			buildings.AddComponent<NavMeshModifier>();
+		} */
+	
 		//StartCoroutine(ExecuteAfterTime(5));
 	}
-	
 	// Update is called once per frame
-	void Update () {
+	/*void Update () {
 
 		if(Input.GetKeyDown("b")) { // Press "b" to rebuild NavMesh
 
@@ -35,13 +41,26 @@ public class NavMeshBuilder : MonoBehaviour {
 			Debug.Log("Currently updating NavMeshSurface.");
 		}
 		
-	}
+	} */
+	void buildTheMesh(){
+		if(firstBuild) {
+			SetNavMeshSettings();
+		}
 
-	/*IEnumerator ExecuteAfterTime(float time) {
-		yield return new WaitForSeconds(time);
-		surface.BuildNavMesh();
-		Debug.Log("Built NavMeshSurface.");
-	}*/
+		StartCoroutine(BuildNavmesh(humanSurface));
+			//StartCoroutine(BuildNavmesh(vehicleSurface));
+		Debug.Log("Currently updating NavMeshSurface.");
+	}
+	void attachMeshColliders(){
+		GameObject go;
+		Debug.Log("Currently adding Mesh Colliders.");
+		foreach(MeshRenderer mesh in humanSurface.GetComponentsInChildren<MeshRenderer>(true))
+		{
+			go=mesh.gameObject;
+			go.AddComponent<MeshCollider>();
+		} 
+		Debug.Log("Finished adding Mesh Colliders.");
+	} 
 
 	// Sets the layer for gameObject and its children, children's children, etc.
 	public static void SetLayerRecursively(string objectName, int layerNum) {
@@ -65,9 +84,9 @@ public class NavMeshBuilder : MonoBehaviour {
         }
 
 		// Puts terrain, roads, and buildings into proper layers
-		NavMeshBuilder.SetLayerRecursively("Terrain", 11);
-		NavMeshBuilder.SetLayerRecursively("Roads", 8);
-		NavMeshBuilder.SetLayerRecursively("Buildings", 9);
+		WorldBuilder.SetLayerRecursively("Terrain", 11);
+		WorldBuilder.SetLayerRecursively("Roads", 8);
+		WorldBuilder.SetLayerRecursively("Buildings", 9);
 
         // Discludes buildings from being walkable for NavMesh Agent
         buildings.AddComponent<NavMeshModifier>();

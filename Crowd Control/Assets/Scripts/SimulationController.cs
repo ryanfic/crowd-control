@@ -87,7 +87,9 @@ public class SimulationController : MonoBehaviour
             {
                     line.GetComponent<PoliceLineController>().targetNearestBusStop(BusStops);
             }
-            PoliceLine.GetComponent<PoliceLineController>().targetNearestBusStop(BusStops);
+            if(PoliceLine){
+                PoliceLine.GetComponent<PoliceLineController>().targetNearestBusStop(BusStops);
+            }
         }
         if(Input.GetKeyDown("o")) 
         {
@@ -100,7 +102,7 @@ public class SimulationController : MonoBehaviour
 				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
 
 					Debug.Log("Crowd agent created.");
-                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y,hit.point.z);
+                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y+1,hit.point.z);
 					addCrowd(spawnLocation);
 				}
 			}
@@ -126,7 +128,20 @@ public class SimulationController : MonoBehaviour
 		}
         if(Input.GetKeyDown("p"))
         {
-            makingPL = true;
+            //makingPL = true;
+            resetPLPoint();
+			Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+
+			if(Physics.Raycast(ray, out hit)) {
+
+				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
+
+					Debug.Log("Police Line Created.");
+                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y,hit.point.z);
+					addPL(spawnLocation);
+				}
+			}
         }
     }
 
@@ -143,13 +158,22 @@ public class SimulationController : MonoBehaviour
     {
         Vector3 spawnLocation = Vector3.Lerp(PLpoint[0],PLpoint[1],0.5f);
         
-        Quaternion spawnRotation; /*= Quaternion.identity; */
+        Quaternion spawnRotation; 
         spawnRotation = Quaternion.LookRotation(getNormal2D(PLpoint[0],PLpoint[1]));
         print("Angle: " + spawnRotation);
         GameObject line = Instantiate(PoliceLinetemplate, spawnLocation, spawnRotation);
         line.GetComponent<LineRenderer>().SetPositions(PLpoint);
         PoliceLines.Add(line);
         pltot++;
+
+    }
+    void addPL(Vector3 pos)
+    {
+        Quaternion spawnRotation = Quaternion.identity;
+        GameObject nline = Instantiate(PoliceLinetemplate, pos, spawnRotation);
+        PoliceLines.Add(nline);
+        pltot++;
+
     }
 
     //Gets the left hand normal from two points, assuming that they are in a 2d plane on Y
