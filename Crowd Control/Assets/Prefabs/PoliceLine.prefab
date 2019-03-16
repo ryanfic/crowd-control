@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 7063431192109482146}
   - component: {fileID: 244000297531309796}
   - component: {fileID: 3329967583772376038}
-  m_Layer: 0
+  - component: {fileID: 2317477278185447969}
+  m_Layer: 14
   m_Name: PoliceLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,8 +73,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -5, y: 0, z: 0}
-  - {x: 5, y: 0, z: 0}
+  - {x: -12, y: 0, z: 0}
+  - {x: 12, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
@@ -141,10 +142,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cacdb1a1f06e0045888de13d396ffbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  police: {fileID: 8856550287773891538, guid: 9b0f24b7a343f0a4aaac54a097aac965, type: 3}
+  policeTemplate: {fileID: 8856550287773891538, guid: 9b0f24b7a343f0a4aaac54a097aac965,
+    type: 3}
   targetPosition: {x: -17.912098, y: 0.0000019048276, z: 15.978854}
   rotSpeed: 5
   speed: 5
+  overlap: 0.1
 --- !u!195 &244000297531309796
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -154,12 +157,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 7063431192109482145}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 5
+  m_Radius: 10
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -175,8 +178,21 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7063431192109482145}
   m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 21, y: 2, z: 4}
+  m_Center: {x: 0, y: 1, z: 1}
+--- !u!65 &2317477278185447969
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7063431192109482145}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10.2, y: 2, z: 2}
+  m_Size: {x: 24.2, y: 2, z: 2}
   m_Center: {x: 0, y: 1, z: 0}

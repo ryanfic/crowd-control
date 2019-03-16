@@ -39,7 +39,7 @@ public class TransitController : MonoBehaviour
     protected void moveToNextStop()
     {
         Destroy(gameObject);
-        Debug.Log("Moved to next stop.");
+        //Debug.Log("Moved to next stop.");
     }
     public float getWaitTime()
     {

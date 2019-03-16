@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/_Scenes/CrowdControl1.unity
+    guid: 5e066daa63067f949b635750130ba0cb
   m_configObjects: {}

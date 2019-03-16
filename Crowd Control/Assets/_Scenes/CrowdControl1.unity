@@ -97,7 +97,7 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 5
+    agentRadius: 15
     agentHeight: 2
     agentSlope: 4.6
     agentClimb: 0.4
@@ -105,7 +105,7 @@ NavMeshSettings:
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 1.6666666
+    cellSize: 5
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 1
@@ -524,17 +524,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maincam: {fileID: 534669904}
+  simulationStartTime: 0
   PoliceLinetemplate: {fileID: 7063431192109482145, guid: efd03bbaf160a234999e5025fbe55096,
     type: 3}
-  PoliceLines: []
   pltot: 0
+  policeTotal: 0
   crowdtemplate: {fileID: 5395366914449146039, guid: c5dfbdcfa288ce9499ed8bcb039c0061,
     type: 3}
-  crowdlist: []
   crowdtot: 0
+  RlCrowdTot: 0
   BusStoptemplate: {fileID: 7056145886617336719, guid: 39d26f7615b26ed44b2ed65c26f6f5c6,
     type: 3}
-  BusStops: []
   stopstot: 0
   PLpoint:
   - {x: 0, y: 0, z: 0}

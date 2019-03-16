@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5395366914449146036}
   - component: {fileID: 1219133507956945058}
   - component: {fileID: 2070393265369818109}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Crowd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,4 +122,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c36496911987484481abd3aeb1624da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 10
+  value: 50

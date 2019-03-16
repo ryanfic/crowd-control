@@ -20,6 +20,6 @@ public class TransitStopController : MonoBehaviour
         Vector3 spawnLocation = new Vector3(transform.localPosition.x,transform.localPosition.y+1,transform.localPosition.z);
         Quaternion spawnRotation = Quaternion.identity;
         Instantiate(TransitTemplate, spawnLocation, spawnRotation);
-        Debug.Log("Transit created.");
+        //Debug.Log("Transit created.");
     }
 }

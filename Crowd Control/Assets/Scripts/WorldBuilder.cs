@@ -52,6 +52,7 @@ public class WorldBuilder : MonoBehaviour {
 		{
 			go=mesh.gameObject;
 			go.AddComponent<MeshCollider>();
+			/*go.GetComponent<MeshCollider>().convex=true; */
 		} 
 		Debug.Log("Finished adding Mesh Colliders.");
 	} 
