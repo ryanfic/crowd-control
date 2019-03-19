@@ -75,7 +75,7 @@ public class WorldBuilder : MonoBehaviour {
 
 		// Sets WrldMap and all children to navigation static
 		foreach(Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
-        	GameObjectUtility.SetStaticEditorFlags(trans.gameObject, StaticEditorFlags.NavigationStatic);
+        	//GameObjectUtility.SetStaticEditorFlags(trans.gameObject, StaticEditorFlags.NavigationStatic);
         }
 
 		// Puts terrain, roads, and buildings into proper layers
