@@ -11,13 +11,15 @@ public class PoliceLineController : MonoBehaviour
     private int numPolice=0;
     public Vector3 targetPosition;
 
+    private float targetAccuracy = 5f; // How close the object has to get to the target before it says it has reached it
+
     public float rotSpeed = 5;
     public float speed = 10;
     public float overlap = 0.1f;
     Vector3 lookAtTarget;
     Quaternion lineRot;
     private NavMeshAgent agent;
-    private bool moving = false;
+    public bool moving = false;
 
     private float minLength=10f;
 
@@ -32,6 +34,12 @@ public class PoliceLineController : MonoBehaviour
         //Vector3 pos = transform.position;
         //pos.y = 0;
         //transform.position = pos;
+    }
+
+    void Update(){
+        if(moving){
+            Move();
+        }
     }
 
     private void SpawnPolice()
@@ -69,10 +77,10 @@ public class PoliceLineController : MonoBehaviour
             count++;
         } */
     }
-    public void targetNearestBusStop(IList<GameObject> stops)
+    public void moveToNearestBusStop(IList<GameObject> stops)
     {
         GameObject targetStop = getNearestBusStop(stops);
-        AgentMove(targetStop.transform.position);
+        moveToGivenPosition(targetStop.transform.position);
         //To get time when start moving to bus stop
         Debug.Log("Started moving at " +Time.time);
 
@@ -105,7 +113,7 @@ public class PoliceLineController : MonoBehaviour
         }
         return closeststop;
     }
-    public void targetMousePosition(Camera cam)
+    public void moveToMousePosition(Camera cam)
     {
         Ray ray = /*Camera.main */cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -115,13 +123,14 @@ public class PoliceLineController : MonoBehaviour
 
             if(hit.collider.tag == "Ground"||hit.collider.tag =="BusStop"){
                 //setTargetPosition(hit.point);
-                AgentMove(hit.point);
+                moveToGivenPosition(hit.point);
             }
         }
     }
-    public void targetGivenPosition(Vector3 pos)
+    public void moveToGivenPosition(Vector3 pos)
     {
-        AgentMove(pos);
+        setTargetPosition(pos);
+        //AgentMove(pos);
     }
     private void setTargetPosition(Vector3 targetpos)
     {
@@ -136,15 +145,15 @@ public class PoliceLineController : MonoBehaviour
         //set moving to true
         moving = true;
     }
-    public void targetNextWaypoint(){
+    public void moveToNextWaypoint(){
             Debug.Log("Next waypoint: " + waypoints.Peek()+", started moving at: " +Time.time);
-            AgentMove(waypoints.Dequeue());
+            moveToGivenPosition(waypoints.Dequeue());
     }
-    public void delayedTargetNextWaypoint(){
-        targetNextWaypoint();
+    public void delayedMoveToNextWaypoint(){
+        moveToNextWaypoint();
         if(waypoints.Count>0&&waypointDelay.Count>0){
             float t = waypointDelay.Dequeue();
-            Invoke("delayedTargetNextWaypoint",t);
+            Invoke("delayedMoveToNextWaypoint",t);
         }
         /* else{
             Debug.Log("Reached the destination!");
@@ -169,12 +178,39 @@ public class PoliceLineController : MonoBehaviour
         //Rotate
         transform.rotation = Quaternion.Slerp(transform.rotation, lineRot, rotSpeed * Time.deltaTime);
         //Move
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        //ector3 destination = (targetPosition-transform.position);
+        //destination *= Vector3.Distance(targetPosition,transform.position)<(speed * Time.deltaTime)?1:(speed * Time.deltaTime);
+        //Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        //Debug.Log("Attempting to elevate");
+        //destination = correctElevation(destination);
+        transform.position = Vector3.MoveTowards(transform.position, /*destination*/targetPosition, speed * Time.deltaTime);;
         //if the line has reached its target position, stop
         //may want a range instead of an exact location
-        if(transform.position == targetPosition)
+        if(Vector3.Distance(transform.position,targetPosition)<targetAccuracy)
         {
             moving = false;
+        }
+    }
+    private Vector3 correctElevation(Vector3 pos){
+        Debug.Log("Attempting to elevate");
+        pos.y=pos.y+100;
+        Ray ray = new Ray(pos,Vector3.down*1000);
+        RaycastHit hit;
+        /*Debug.DrawRay(pos,Vector3.down, Color.green, 500); */
+		if(Physics.Raycast(ray, out hit)) {
+			if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
+                Vector3 location = new Vector3(hit.point.x,hit.point.y,hit.point.z);
+                return location;
+                Debug.Log("Hit " +hit.transform.gameObject.name +" at: " +location); 
+			}
+            else{
+                Debug.Log("building " +pos);
+                return pos;
+            }
+		}
+        else {
+            Debug.Log("No hit from " +pos);
+            return pos;
         }
     }
 

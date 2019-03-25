@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8856550287773891549}
   - component: {fileID: 2418032138391660408}
   - component: {fileID: 7731100838006443525}
+  - component: {fileID: 8454576675799941112}
   m_Layer: 13
   m_Name: Police
   m_TagString: Untagged
@@ -123,3 +124,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoliceNum: 0
+--- !u!208 &8454576675799941112
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8856550287773891538}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 1, y: 1, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

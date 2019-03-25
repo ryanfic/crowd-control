@@ -7,6 +7,9 @@ TagManager:
   - Bus
   - BusStop
   - Ground
+  - Crowd
+  - AreaOfInterest
+  - AreaOfInfluence
   layers:
   - Default
   - TransparentFX
@@ -23,11 +26,11 @@ TagManager:
   - Crowd
   - Police
   - PoliceLine
-  - 
-  - 
-  - 
-  - 
-  - 
+  - AreaOfInfluence
+  - AreaOfInterest
+  - Instigator
+  - Follower
+  - Lawful
   - 
   - 
   - 

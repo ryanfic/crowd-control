@@ -8,11 +8,10 @@ using UnityEditor;
 
 public class WorldBuilder : MonoBehaviour {
 
-	public NavMeshSurface humanSurface;
-	public NavMeshSurface vehicleSurface;
+	//public NavMeshSurface policelineSurface;
+	public NavMeshSurface crowdSurface;
+	//public NavMeshSurface vehicleSurface;
 
-	//private NavMeshData savedNavMesh;
-	
 	private bool firstBuild;
 
 	// Use this for initialization
@@ -30,7 +29,7 @@ public class WorldBuilder : MonoBehaviour {
 				SetNavMeshSettings();
 			}
 
-			StartCoroutine(BuildNavmesh(humanSurface));
+			StartCoroutine(BuildNavmesh(policelineSurface));
 			//StartCoroutine(BuildNavmesh(vehicleSurface));
 			Debug.Log("Currently updating NavMeshSurface.");
 		}
@@ -41,14 +40,15 @@ public class WorldBuilder : MonoBehaviour {
 			SetNavMeshSettings();
 		}
 
-		StartCoroutine(BuildNavmesh(humanSurface));
-			//StartCoroutine(BuildNavmesh(vehicleSurface));
+		//StartCoroutine(BuildNavmesh(policelineSurface));
+		StartCoroutine(BuildNavmesh(crowdSurface));
+		//StartCoroutine(BuildNavmesh(vehicleSurface));
 		Debug.Log("Currently updating NavMeshSurface.");
 	}
 	void attachMeshColliders(){
 		GameObject go;
 		Debug.Log("Currently adding Mesh Colliders.");
-		foreach(MeshRenderer mesh in humanSurface.GetComponentsInChildren<MeshRenderer>(true))
+		foreach(MeshRenderer mesh in crowdSurface.GetComponentsInChildren<MeshRenderer>(true))
 		{
 			go=mesh.gameObject;
 			go.AddComponent<MeshCollider>();
@@ -74,9 +74,9 @@ public class WorldBuilder : MonoBehaviour {
 		//floor.transform.localScale = new Vector3(0.99f, 0.265f, 0.99f);
 
 		// Sets WrldMap and all children to navigation static
-		foreach(Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
+		//foreach(Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
         	//GameObjectUtility.SetStaticEditorFlags(trans.gameObject, StaticEditorFlags.NavigationStatic);
-        }
+        //}
 
 		// Puts terrain, roads, and buildings into proper layers
 		WorldBuilder.SetLayerRecursively("Terrain", 11);

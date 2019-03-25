@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class SimulationController : MonoBehaviour
 {
     public Camera maincam;
 
     /*The Start time for the simulation, in real world seconds */
     /*1 hour = 3600 seconds; 12PM = 43200 */
-    public float simulationStartTime = 43200f;
+    public float simulationStartTime = 0f;
 
     public GameObject PoliceLinetemplate;
     public IList<GameObject> PoliceLines = new List<GameObject>();
@@ -16,7 +17,7 @@ public class SimulationController : MonoBehaviour
 
     public int policeTotal =0;
 
-
+    public GameObject AOITemplate;
 
 
     public GameObject crowdtemplate;
@@ -52,10 +53,10 @@ public class SimulationController : MonoBehaviour
         }
 
         /*Scenario 1 */
-        for(int i=0;i<10;i++){
-                 StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-66+i*5),32f,(float)(50-5*i)), 100,15,3));
+        /*for(int i=0;i<10;i++){
+                 StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-66+i*5),29f,(float)(50-5*i)), 100,15,3));
             
-        }
+        }*/
         Quaternion rot = new Quaternion (0.0f,-0.4f,0.0f,0.9f);
         Queue<Vector3> waypoints = new Queue<Vector3>();
         Queue<float> delays = new Queue<float>();
@@ -82,26 +83,8 @@ public class SimulationController : MonoBehaviour
         //435.9674-372.0013 = 64
                 delays.Enqueue(16+2f);
         waypoints.Enqueue(new Vector3(-311.9f, 36.3f, 258.4f));
-        //x-441.7021
-                //delays.Enqueue(3f);
-/*
-        waypoints.Enqueue(new Vector3(-81.9f,30.5f,65.8f));
-
-        waypoints.Enqueue(new Vector3(-154.6f,33.1f,131.4f));
-        delays.Enqueue(3f);
-
-
-        waypoints.Enqueue(new Vector3(-95.7f,31.1f,79.3f));
-        delays.Enqueue(3f);
-        waypoints.Enqueue(new Vector3(-114.3f,31.9f,96.7f));
-        delays.Enqueue(3f);
-        waypoints.Enqueue(new Vector3(-154.9f,33.1f,131.9f));
-        delays.Enqueue(3f);
-        waypoints.Enqueue(new Vector3(-276.8f,34.6f,254.9f));
-        delays.Enqueue(3f);
-        waypoints.Enqueue(new Vector3(-313.6f,39.6f,256.3f));
-        delays.Enqueue(3f);*/
         StartCoroutine(delayAddPL(new Vector3((float)(-4.0),27.3f,(float)(-10.6)),rot,3,waypoints,delays));
+        Invoke("addAOI",0);
         
         
     }
@@ -135,9 +118,9 @@ public class SimulationController : MonoBehaviour
             {
                 foreach(GameObject line in PoliceLines)
                 {
-                    line.GetComponent<PoliceLineController>().targetMousePosition(maincam);
+                    line.GetComponent<PoliceLineController>().moveToMousePosition(maincam);
                 }
-                PoliceLine.GetComponent<PoliceLineController>().targetMousePosition(maincam);
+                PoliceLine.GetComponent<PoliceLineController>().moveToMousePosition(maincam);
             }
             
             //PoliceLine.GetComponent<PoliceLineController>().Move();
@@ -159,7 +142,7 @@ public class SimulationController : MonoBehaviour
             resetPLPoint();
             foreach(GameObject line in PoliceLines)
             {
-                    line.GetComponent<PoliceLineController>().targetNearestBusStop(BusStops);
+                    line.GetComponent<PoliceLineController>().moveToNearestBusStop(BusStops);
             }
         }
         if(Input.GetKeyDown("o")) 
@@ -221,7 +204,7 @@ public class SimulationController : MonoBehaviour
 			Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
 
-			if(Physics.Raycast(ray, out hit)) {
+			if(Physics.Raycast(ray.origin, ray.direction, out hit)) {
 
 				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
 
@@ -245,7 +228,7 @@ public class SimulationController : MonoBehaviour
         {
             foreach(GameObject pl in PoliceLines){
                 Debug.Log("Started moving through waypoints at: " + Time.time);
-                pl.GetComponent<PoliceLineController>().delayedTargetNextWaypoint();
+                pl.GetComponent<PoliceLineController>().delayedMoveToNextWaypoint();
             }
             /*For testing hitGroundAtPos
             Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
@@ -273,8 +256,8 @@ public class SimulationController : MonoBehaviour
                 
                 for(int i=0;i<3;i++)
                 {
-                    line.GetComponent<PoliceLineController>().delayedTargetNextWaypoint();
-                    /*Invoke("PoliceLines["+i+"].GetComponent<PoliceLineController>().targetGivenPosition",delay*i);*/
+                    line.GetComponent<PoliceLineController>().delayedMoveToNextWaypoint();
+                    /*Invoke("PoliceLines["+i+"].GetComponent<PoliceLineController>().moveToGivenPosition",delay*i);*/
                // }
                 
             //}
@@ -296,20 +279,35 @@ public class SimulationController : MonoBehaviour
 				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
                     Debug.Log("Attempting hitGroundAtPos from " + hit.point);
                     foreach(GameObject pl in PoliceLines)
-                     pl.GetComponent<PoliceLineController>().targetGivenPosition(hit.point);
+                     pl.GetComponent<PoliceLineController>().moveToGivenPosition(hit.point);
 				}
 			}
         }*/
+        /*if(Input.GetKeyDown("q"))
+        {
+            NavMeshAgent agent;
+            foreach(GameObject c in crowdlist){
+                Vector3 target = c.transform.position;
+                target.x +=5;
+                agent = c.GetComponent<NavMeshAgent>();
+                agent.SetDestination(target);
+            }
+        }*/
     }
-
+    void addAOI(){
+        Vector3 pos = new Vector3(-43.4f,30,25);
+        Quaternion spawnRotation = new Quaternion(0.0f,0.4f,0.0f,0.9f);
+        GameObject aoi = Instantiate(AOITemplate, pos, spawnRotation);
+    }
     void addCrowd(Vector3 pos)
     {
         Quaternion spawnRotation = Quaternion.identity;
+        //pos.y = hitGroundAtPos(pos).y;
         GameObject ncrowd = Instantiate(crowdtemplate, pos, spawnRotation);
         crowdlist.Add(ncrowd);
         crowdtot++;
         CrowdController cScript = (CrowdController)ncrowd.GetComponent("CrowdController");
-        RlCrowdTot+=cScript.value;
+        RlCrowdTot+=cScript.getValue();
         /*To print how many crowd objects exist */
         /* Debug.Log("New Crowd Total:" + RlCrowdTot);*/
         //CreateObject(baseCrowdAgent, hit.point, "CrowdAgent (" + crowdCount + ")", crowdAgents.transform).GetComponent<NavMeshAgent>();
@@ -363,7 +361,7 @@ public class SimulationController : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         Quaternion spawnRotation = Quaternion.identity;
-        GameObject nline = Instantiate(PoliceLinetemplate, pos, rot /* spawnRotation*/);
+        GameObject nline = Instantiate(PoliceLinetemplate, pos, rot);
         PoliceLines.Add(nline);
         pltot++;
     }
@@ -371,7 +369,7 @@ public class SimulationController : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         Quaternion spawnRotation = Quaternion.identity;
-        GameObject nline = Instantiate(PoliceLinetemplate, pos, rot /* spawnRotation*/);
+        GameObject nline = Instantiate(PoliceLinetemplate, pos, rot);
         nline.GetComponent<PoliceLineController>().addWaypoints(points,delays);
         PoliceLines.Add(nline);
         pltot++;
@@ -439,14 +437,14 @@ public class SimulationController : MonoBehaviour
         RaycastHit hit;
         /*Debug.DrawRay(pos,Vector3.down, Color.green, 500); */
 			if(Physics.Raycast(ray, out hit)) {
-                /*Debug.Log("Hit"); */
 				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
                     Vector3 location = new Vector3(hit.point.x,hit.point.y,hit.point.z);
                     return location;
                     /*Debug.Log("Hit " +hit.transform.gameObject.name +" at: " +location); */
 				}
 			}
-            /*Debug.Log("No hit from " +pos); */
+            /*else 
+            Debug.Log("No hit from " +pos); */
             return pos;
             
     }

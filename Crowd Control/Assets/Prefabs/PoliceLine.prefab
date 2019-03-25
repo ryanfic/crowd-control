@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7063431192109482147}
   - component: {fileID: 7063431192109482144}
   - component: {fileID: 7063431192109482146}
-  - component: {fileID: 244000297531309796}
   - component: {fileID: 3329967583772376038}
   - component: {fileID: 2317477278185447969}
   m_Layer: 14
@@ -73,8 +72,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -12, y: 0, z: 0}
-  - {x: 12, y: 0, z: 0}
+  - {x: -20, y: 0, z: 0}
+  - {x: 20, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
@@ -148,28 +147,7 @@ MonoBehaviour:
   rotSpeed: 5
   speed: 5
   overlap: 0.1
---- !u!195 &244000297531309796
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7063431192109482145}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 10
-  m_Speed: 5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 2
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  moving: 0
 --- !u!65 &3329967583772376038
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -181,7 +159,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 21, y: 2, z: 4}
+  m_Size: {x: 40, y: 2, z: 4}
   m_Center: {x: 0, y: 1, z: 1}
 --- !u!65 &2317477278185447969
 BoxCollider:
@@ -194,5 +172,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 24.2, y: 2, z: 2}
+  m_Size: {x: 40, y: 2, z: 2}
   m_Center: {x: 0, y: 1, z: 0}
