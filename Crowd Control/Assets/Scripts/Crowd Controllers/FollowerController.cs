@@ -16,11 +16,13 @@ public class FollowerController : LeavingCrowdController
     void Start()
     {
         Invoke("initalizeAOI",4);
-        base.Start();
+        //base.Start();
+        setFinalDestination();
+        Invoke("Move",4);
         
     }
     void initalizeAOI(){
-        finalDestination = getNearestAOI().transform.position;
+        riotLocation = getNearestAOI().transform.position;
     }
     void Update(){
         if(!rioting && riotlevel>=riotthreshold)

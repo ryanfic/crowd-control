@@ -9,7 +9,7 @@ public class InstigatorController : CrowdController
         base.Start();
     }
     public InstigatorController(){
-        influence = 50;
+        influence = 10;
     }
     protected override void setFinalDestination(){
         finalDestination = getNearestAOI().transform.position;

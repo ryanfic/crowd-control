@@ -30,7 +30,7 @@ public class CrowdGenerator : MonoBehaviour
         float rand = Random.value*100;
         //If the roll is lower than the chance to get Instigator, make the crowd agent an instigator
         if(rand<crowdPercentInstigator){
-            ncrowd.transform.Find("AreaOfInfluence").GetComponent<SphereCollider>().radius=20;
+            //ncrowd.transform.Find("AreaOfInfluence").GetComponent<SphereCollider>().radius=20;
             ncrowd.AddComponent<InstigatorController>();
             ncrowd.layer = LayerMask.NameToLayer("Instigator");
             ncrowd.GetComponent<MeshRenderer>().material = material[0];
