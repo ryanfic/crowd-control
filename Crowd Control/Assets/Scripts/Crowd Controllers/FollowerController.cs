@@ -15,10 +15,13 @@ public class FollowerController : LeavingCrowdController
 
     void Start()
     {
+        influence=0f;
         Invoke("initalizeAOI",4);
         //base.Start();
+        riotLocation = gameObject.transform.position;
         setFinalDestination();
         Invoke("Move",4);
+        Destroy(transform.GetChild(0).gameObject);
         
     }
     void initalizeAOI(){
@@ -36,17 +39,28 @@ public class FollowerController : LeavingCrowdController
 
     private void startRioting(){
         rioting = true;
-        gameObject.GetComponent<MeshRenderer>().material = material[1];
+        //gameObject.GetComponent<MeshRenderer>().material = material[1];
+        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material.color = new Color(230/255f, 126/255f, 34/255f, 1f);//241f/255f, 90f/255f, 34f/255f, 1f);
+        SkinnedMeshRenderer[] mesh = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach(SkinnedMeshRenderer m in mesh)
+        {
+            m.material.color = Color.magenta; //new Color(241f/255f, 90f/255f, 34f/255f, 1f);;
+        }
         Move();
-        influence=-influence;
-        updateAOInf();
+        //influence=-influence;
+        //updateAOInf();
     }
     private void stopRioting(){
         rioting = false;
-        gameObject.GetComponent<MeshRenderer>().material = material[0];
+        SkinnedMeshRenderer[] mesh = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach(SkinnedMeshRenderer m in mesh)
+        {
+            m.material.color = Color.yellow;
+        }
+        //gameObject.GetComponent<MeshRenderer>().material = material[0];
         Move();
-        influence=-influence;
-        updateAOInf();
+        //influence=-influence;
+        //updateAOInf();
     }
     private void updateAOInf(){
         gameObject.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(influence);
@@ -84,7 +98,7 @@ public class FollowerController : LeavingCrowdController
             if(/*!hasRiotLocation*/true){
                 if(other.gameObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Instigator"))
                     ig=other.gameObject.transform.parent.GetComponent<InstigatorController>();
-                    if(ig!=null){
+                    if(ig!=null&&ig.getFinalDestination()!=null){
                         hasRiotLocation = true;
                         riotLocation = ig.getFinalDestination();
                         //gameObject.GetComponent<NavMeshAgent>().SetDestination(riotLocation);

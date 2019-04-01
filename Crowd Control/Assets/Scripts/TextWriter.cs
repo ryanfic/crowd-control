@@ -12,4 +12,10 @@ public class TextWriter : MonoBehaviour
         sw.WriteLine(toadd);
         sw.Close();
     }
+    public void WriteRioters<T>(string file, T instigators, T followers, T lawful){
+        StreamWriter sw = new StreamWriter(file);
+        string toadd = "Instigators "+instigators+" Followers " + followers + " Lawful " + lawful;
+        sw.WriteLine(toadd);
+        sw.Close();
+    }
 }

@@ -764,6 +764,7 @@ GameObject:
   - component: {fileID: 1547954085}
   - component: {fileID: 1547954086}
   - component: {fileID: 1547954087}
+  - component: {fileID: 1547954088}
   m_Layer: 0
   m_Name: SimulationController
   m_TagString: Untagged
@@ -844,10 +845,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crowdtemplate: {fileID: 5395366914449146039, guid: c5dfbdcfa288ce9499ed8bcb039c0061,
     type: 3}
-  crowdPercentInstigator: 5
-  crowdPercentFollower: 10
+  crowdPercentInstigator: 2
+  crowdPercentFollower: 80
   material:
   - {fileID: 2100000, guid: d54afd0285609154ea30b8a4ee98dc36, type: 2}
   - {fileID: 2100000, guid: d0bdf8c61d328c441933285ec4fb7809, type: 2}
   - {fileID: 2100000, guid: 9fb3df8961a61fb438f17026e420e71e, type: 2}
   - {fileID: 2100000, guid: fd4e48ad3299c7d40a426a6e001d7a57, type: 2}
+  wr: {fileID: 1547954088}
+--- !u!114 &1547954088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547954083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39fc5ad1155d91143814a5f4ac4ff81f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
