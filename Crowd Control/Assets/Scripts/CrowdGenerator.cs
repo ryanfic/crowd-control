@@ -22,7 +22,7 @@ public class CrowdGenerator : MonoBehaviour
     void Start()
     {
 
-        for(int i=0;i<10;i++){
+        for(int i=0;i<1;i++){
                  StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-66+i*5),29f,(float)(50-5*i)), 100,15,3));
             
         }

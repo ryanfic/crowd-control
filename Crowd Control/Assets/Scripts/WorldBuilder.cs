@@ -9,6 +9,7 @@ using UnityEditor;
 public class WorldBuilder : MonoBehaviour {
 
 	//public NavMeshSurface policelineSurface;
+	private string navMeshPath = "Assets/NavMesh/WRLD_NavMesh.asset";
 	public NavMeshSurface crowdSurface;
 	//public NavMeshSurface vehicleSurface;
 
@@ -19,6 +20,7 @@ public class WorldBuilder : MonoBehaviour {
 		firstBuild = true;
 		Invoke("buildTheMesh",1.5f);
 		Invoke("attachMeshColliders",1.5f);
+
 	}
 	// Update is called once per frame
 	/*void Update () {
@@ -39,11 +41,19 @@ public class WorldBuilder : MonoBehaviour {
 		if(firstBuild) {
 			SetNavMeshSettings();
 		}
+		NavMeshData meshdata = (NavMeshData)AssetDatabase.LoadAssetAtPath(navMeshPath,typeof(NavMeshData));
+		if(meshdata==null)
+		{
+			Debug.Log("Currently updating NavMeshSurface.");
+			StartCoroutine(BuildNavmesh(crowdSurface));
+		}
+		else{
+			crowdSurface.navMeshData = meshdata;
+			// call AddData() to finalize it
+        	crowdSurface.AddData();
+		}
 
-		//StartCoroutine(BuildNavmesh(policelineSurface));
-		StartCoroutine(BuildNavmesh(crowdSurface));
-		//StartCoroutine(BuildNavmesh(vehicleSurface));
-		Debug.Log("Currently updating NavMeshSurface.");
+		
 	}
 	void attachMeshColliders(){
 		GameObject go;
@@ -132,10 +142,16 @@ public class WorldBuilder : MonoBehaviour {
  
         // you need to save the baked data back into the surface
         surface.navMeshData = data;
+		SaveNavMeshData(data);
  
         // call AddData() to finalize it
         surface.AddData();
     }
+	void SaveNavMeshData(NavMeshData data){
+		AssetDatabase.CreateAsset(data, navMeshPath);
+	}
+	
+	//void LoadNavMesh(NavMeshSurface surface)
  
     // creates the navmesh data
     static NavMeshData InitializeBakeData(NavMeshSurface surface) {
