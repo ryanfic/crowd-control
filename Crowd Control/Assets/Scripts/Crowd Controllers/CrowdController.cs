@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public abstract class CrowdController : MonoBehaviour
 {
-    protected int value = 35; //The number of people represented by a single crowd agent in the simulation
+    protected int value = 66; //The number of people represented by a single crowd agent in the simulation
     protected Vector3 finalDestination; // The place the agent wants to go overall
     protected Vector3 currDestination; // The place the agent is moving due to crowd dynamics
     protected bool fleeing = false;

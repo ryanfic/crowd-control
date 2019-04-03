@@ -12,7 +12,6 @@ public class InstigatorController : CrowdController
         influence = 10;
     }
     protected override void setFinalDestination(){
-        //finalDestination = getNearestAOI().transform.position;
-        finalDestination = new Vector3(-6.8f, 28f, -3.2f);
+        finalDestination = getNearestAOI().transform.position;
     }
 }

@@ -57,10 +57,11 @@ public class SimulationController : MonoBehaviour
                  StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-66+i*5),29f,(float)(50-5*i)), 100,15,3));
             
         }*/
-        Quaternion rot = new Quaternion (0.0f,-0.4f,0.0f,0.9f);
+        
+        /*Quaternion rot = new Quaternion (0.0f,-0.4f,0.0f,0.9f);
         Queue<Vector3> waypoints = new Queue<Vector3>();
         Queue<float> delays = new Queue<float>();
-        //delays.Enqueue(10f);
+        //delays.Enqueue(10f); //For Vancouver Conference Run
         waypoints.Enqueue(new Vector3(-66.6f, 31.5f, 47.6f));
         //96.25958-15.32647 = 81
                 delays.Enqueue(22+2f);
@@ -82,9 +83,33 @@ public class SimulationController : MonoBehaviour
         waypoints.Enqueue(new Vector3(-276.5f, 34.8f, 252.3f));
         //435.9674-372.0013 = 64
                 delays.Enqueue(16+2f);
-        waypoints.Enqueue(new Vector3(-311.9f, 36.3f, 258.4f));
+        waypoints.Enqueue(new Vector3(-311.9f, 36.3f, 258.4f));*/
         //StartCoroutine(delayAddPL(new Vector3((float)(-4.0),27.3f,(float)(-10.6)),rot,3,waypoints,delays));//first simulation pl location
-        StartCoroutine(delayAddPL(new Vector3((float)(-23.6),28.0f,(float)(9.8)),rot,3,waypoints,delays));
+        //StartCoroutine(delayAddPL(new Vector3((float)(-23.6),28.0f,(float)(9.8)),rot,3,waypoints,delays));//second simulation pl location to test moving around pl
+
+        /* Queue<float> delays = new Queue<float>();
+         //FIRST STREET: Start PL from -34.7, 35.0, 97.0   Move to:  -154.7, 26.4, -24.1
+         Queue<Vector3> fwaypoints = new Queue<Vector3>();
+        fwaypoints.Enqueue(new Vector3(-154.7f, 26.4f, -24.1f));
+        Quaternion frot = Quaternion.Euler(0f,-135.2f,0f);
+        StartCoroutine(delayAddPL(new Vector3(-40.3f,30.9f,89.5f),frot,3,fwaypoints,delays));
+        
+
+        //coliders 32 2 5.5
+
+        //SECOND STREET: Start PL from -78.3, 35.0, 123.5   Move to:  -197.7, 27.4, -3.4
+        Queue<Vector3> swaypoints = new Queue<Vector3>();
+        swaypoints.Enqueue(new Vector3(-197.7f, 27.4f, -3.4f));
+        Quaternion srot = Quaternion.Euler(0f,-135.2f,0f);
+        StartCoroutine(delayAddPL(new Vector3(-78.3f, 32.5f, 123.5f),srot,3,swaypoints,delays));
+
+        //THIRD STREET: Start PL from -94.2, 35.0, 176.8   Move to:  -221.9, 29.1, 37.2
+        Queue<Vector3> twaypoints = new Queue<Vector3>();
+        twaypoints.Enqueue(new Vector3(-212.3f, 29.1f, 56.5f));
+        Quaternion trot = Quaternion.Euler(0f,-135.2f,0f);
+        StartCoroutine(delayAddPL(new Vector3(-113.6f, 33.2f, 158.2f),trot,3,twaypoints,delays));*/
+
+        
         Invoke("addAOI",0);
         //move to -6.8 28 -3.2
         
@@ -219,6 +244,7 @@ public class SimulationController : MonoBehaviour
         /* Used for debugging stuff
         if(Input.GetKeyDown("q"))
         {
+            Debug.Log()
             getTime();
         }*/
         if(Input.GetKeyDown("w"))
@@ -296,8 +322,8 @@ public class SimulationController : MonoBehaviour
         }*/
     }
     void addAOI(){
-        Vector3 pos = new Vector3(-43.4f,30,25);
-        Quaternion spawnRotation = new Quaternion(0.0f,0.4f,0.0f,0.9f);
+        Vector3 pos = new Vector3(-117.3f,30f,103.5f);
+        Quaternion spawnRotation = Quaternion.Euler(0f,44.69f,0f);//new Quaternion(0.0f,0.4f,0.0f,0.9f);
         GameObject aoi = Instantiate(AOITemplate, pos, spawnRotation);
     }
     void addCrowd(Vector3 pos)
@@ -365,6 +391,7 @@ public class SimulationController : MonoBehaviour
         GameObject nline = Instantiate(PoliceLinetemplate, pos, rot);
         PoliceLines.Add(nline);
         pltot++;
+        Invoke("delayMovePL",0f);
     }
     IEnumerator delayAddPL(Vector3 pos, Quaternion rot , int time, Queue<Vector3> points,Queue<float> delays)
     {
@@ -374,6 +401,15 @@ public class SimulationController : MonoBehaviour
         nline.GetComponent<PoliceLineController>().addWaypoints(points,delays);
         PoliceLines.Add(nline);
         pltot++;
+        Invoke("delayMovePL",0f);
+    }
+    void delayMovePL()
+    {
+        foreach(GameObject pl in PoliceLines){
+                Debug.Log("Started moving through waypoints at: " + Time.time);
+                pl.GetComponent<PoliceLineController>().startDelayedMoveToNextWaypoint(0f);
+        }
+        Debug.Log("Called movement!");
     }
     private void getNumPolice(GameObject pl){
         foreach(var el in PoliceLines){

@@ -158,9 +158,11 @@ public class PoliceLineController : MonoBehaviour
         /* else{
             Debug.Log("Reached the destination!");
         }*/
-
-            
     }
+    public void startDelayedMoveToNextWaypoint(float delay){
+        Invoke("delayedMoveToNextWaypoint", delay);
+    }
+
     public void warpToNextWaypoint(){
             
             if(waypoints.Count>0&&waypointDelay.Count>0){

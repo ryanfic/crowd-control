@@ -7,7 +7,9 @@ public class CrowdGenerator : MonoBehaviour
     public GameObject crowdtemplate;
     public float crowdPercentInstigator; //percent of the crowd that are instigators, 30.5 = 30.5%
     public float crowdPercentFollower; //percent of the crowd that are followers
-    private int tospawn = 1000;
+    
+    private float crowdPercentLawful;
+    private int tospawn = 600;
     private int totalInstigators = 0;
     private int totalFollowers = 0;
     
@@ -21,10 +23,18 @@ public class CrowdGenerator : MonoBehaviour
     public TextWriter wr;
     void Start()
     {
-
-        for(int i=0;i<1;i++){
-                 StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-66+i*5),29f,(float)(50-5*i)), 100,15,3));
+        crowdPercentLawful = 100 - crowdPercentInstigator - crowdPercentFollower;
+        /*for(int i=0;i<10;i++){
+                 StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-66+i*5),29f,(float)(50-5*i)), 20,15,3));
             
+        }*/
+        //4:-113.2818 33.1 97.550
+        //3: -82.7300 31.7 66.288
+        //2: -46.649 30.3 30.999
+        //1: -26.2 29.44 12.1
+        for(int i=0;i<4;i++){
+                 //StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-26.2-i*30),29f,(float)(12.1+30*i)), 140,25,3)); //spawn up the road
+            StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-116.2+i*30),29f,(float)(102.1-30*i)), 150,25,3)); //spawn down the road
         }
         Invoke("WriteCrowdRatios",3.1f);
         //addCrowd(new Vector3(-66,29f,50));
@@ -37,7 +47,7 @@ public class CrowdGenerator : MonoBehaviour
         GameObject ncrowd = Instantiate(crowdtemplate, pos, spawnRotation);
         float rand = Random.value*100;
         //If the roll is lower than the chance to get Instigator, make the crowd agent an instigator
-        if(rand<crowdPercentInstigator&&100f*totalInstigators/tospawn<crowdPercentInstigator){
+        if(rand<crowdPercentInstigator&&(100f*totalInstigators)/tospawn<crowdPercentInstigator){
             ncrowd.transform.Find("AreaOfInfluence").GetComponent<SphereCollider>().radius=12;
             ncrowd.AddComponent<InstigatorController>();
             ncrowd.layer = LayerMask.NameToLayer("Instigator");
@@ -51,7 +61,7 @@ public class CrowdGenerator : MonoBehaviour
             totalInstigators++;
         }
         //If the roll is above the chance to get Instigator but lower than the chance to get Follower, make the crowd agent an follower
-        else if(rand<crowdPercentInstigator+crowdPercentFollower&&100f*totalFollowers/tospawn<crowdPercentFollower){
+        else if(rand<crowdPercentInstigator+crowdPercentFollower&&(100f*totalFollowers)/tospawn<crowdPercentFollower){
             ncrowd.AddComponent<FollowerController>();
             ncrowd.layer = LayerMask.NameToLayer("Follower");
             //ncrowd.GetComponent<MeshRenderer>().material = material[1];

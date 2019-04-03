@@ -620,36 +620,75 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1179245250
-GameObject:
+--- !u!1001 &1343728108
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1179245251}
-  m_Layer: 0
-  m_Name: NavMeshHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1179245251
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1179245250}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -54.254066, y: 31.265675, z: 38.881027}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5824525702290447526, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_Name
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 28.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.37703264
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9262
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 44.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882546818420602434, guid: b144038e581b0a0478af89d45bece5c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b144038e581b0a0478af89d45bece5c5, type: 3}
 --- !u!1 &1439271096
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +775,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.45000002
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 0}
 --- !u!114 &1439271100
@@ -845,8 +884,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crowdtemplate: {fileID: 5395366914449146039, guid: c5dfbdcfa288ce9499ed8bcb039c0061,
     type: 3}
-  crowdPercentInstigator: 2
-  crowdPercentFollower: 80
+  crowdPercentInstigator: 1
+  crowdPercentFollower: 20
   material:
   - {fileID: 2100000, guid: d54afd0285609154ea30b8a4ee98dc36, type: 2}
   - {fileID: 2100000, guid: d0bdf8c61d328c441933285ec4fb7809, type: 2}
