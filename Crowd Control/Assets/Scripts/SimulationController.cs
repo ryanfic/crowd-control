@@ -83,9 +83,10 @@ public class SimulationController : MonoBehaviour
         //435.9674-372.0013 = 64
                 delays.Enqueue(16+2f);
         waypoints.Enqueue(new Vector3(-311.9f, 36.3f, 258.4f));
-        StartCoroutine(delayAddPL(new Vector3((float)(-4.0),27.3f,(float)(-10.6)),rot,3,waypoints,delays));
+        //StartCoroutine(delayAddPL(new Vector3((float)(-4.0),27.3f,(float)(-10.6)),rot,3,waypoints,delays));//first simulation pl location
+        StartCoroutine(delayAddPL(new Vector3((float)(-23.6),28.0f,(float)(9.8)),rot,3,waypoints,delays));
         Invoke("addAOI",0);
-        
+        //move to -6.8 28 -3.2
         
     }
 
@@ -219,11 +220,11 @@ public class SimulationController : MonoBehaviour
         if(Input.GetKeyDown("q"))
         {
             getTime();
-        }
+        }*/
         if(Input.GetKeyDown("w"))
         {
             printMouseLocation();
-        }*/
+        }
         if(Input.GetKeyDown("e"))
         {
             foreach(GameObject pl in PoliceLines){

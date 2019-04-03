@@ -25,7 +25,8 @@ public class FollowerController : LeavingCrowdController
         
     }
     void initalizeAOI(){
-        riotLocation = getNearestAOI().transform.position;
+        //riotLocation = getNearestAOI().transform.position;
+        riotLocation = new Vector3(-6.8f, 28f, -3.2f);
     }
     void Update(){
         if(!rioting && riotlevel>=riotthreshold)
