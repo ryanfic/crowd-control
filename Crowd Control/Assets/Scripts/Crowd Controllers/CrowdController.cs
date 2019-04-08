@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum CrowdType{Follower, Instigator, Lawful};
 public abstract class CrowdController : MonoBehaviour
 {
     protected int value = 66; //The number of people represented by a single crowd agent in the simulation
     protected Vector3 finalDestination; // The place the agent wants to go overall
     protected Vector3 currDestination; // The place the agent is moving due to crowd dynamics
+    protected bool moving = false;
     protected bool fleeing = false;
     protected float influence = 10f;
+    //agents in neighbourhood of interaction
+    
+
+    protected CrowdType ctype;
 
     protected void Start(){
         Invoke("Move",4);
+        moving = true;
     }
     protected void Update(){
         if(Input.GetKeyDown("q")){
@@ -45,6 +52,8 @@ public abstract class CrowdController : MonoBehaviour
 
     }
     protected void Move(){
+        //if there are people around moving, update the speed
+        //if there are people around moving, update the 
         gameObject.GetComponent<NavMeshAgent>().SetDestination(finalDestination);
     }
 
@@ -75,16 +84,21 @@ public abstract class CrowdController : MonoBehaviour
 
 
     //If the other object is a bus and it is not at maximum capacity, get on and destroy this object
-    public void OnTriggerStay(Collider other)
+    /*public void OnTriggerStay(Collider other)
     {
         if(other.gameObject.tag =="Bus" && !(other.gameObject.GetComponent<BusController>().atMaxCapacity()))
         {
             other.gameObject.GetComponent<BusController>().getOn(value);
             Destroy(gameObject);
         } 
-    }
+    }*/
     public int getValue()
     {
         return value;
+    }
+
+    public CrowdType getCrowdType()
+    {
+        return ctype;
     }
 }

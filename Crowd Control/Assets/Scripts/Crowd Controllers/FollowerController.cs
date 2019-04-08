@@ -21,7 +21,9 @@ public class FollowerController : LeavingCrowdController
         riotLocation = gameObject.transform.position;
         setFinalDestination();
         Invoke("Move",4);
+        moving = true;
         Destroy(transform.GetChild(0).gameObject);
+        ctype = CrowdType.Follower;
         
     }
     void initalizeAOI(){
@@ -46,7 +48,11 @@ public class FollowerController : LeavingCrowdController
         {
             m.material.color = Color.magenta; //new Color(241f/255f, 90f/255f, 34f/255f, 1f);;
         }
-        Move();
+        if(moving)
+        {
+            Move();
+        }
+        
         //influence=-influence;
         //updateAOInf();
     }
@@ -58,7 +64,10 @@ public class FollowerController : LeavingCrowdController
             m.material.color = Color.yellow;
         }
         //gameObject.GetComponent<MeshRenderer>().material = material[0];
-        Move();
+        if(moving)
+        {
+            Move();
+        }
         //influence=-influence;
         //updateAOInf();
     }

@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class CrowdInArea : MonoBehaviour
 {
     public Text countText;
     private int count;
 
-    private string file = "crowddata.txt";
+    private string file = "crowdflowdata.txt";
 
-    public TextWriter wr;
+    //public TextWriter wr;
     
     void Start()
     {
@@ -36,7 +37,12 @@ public class CrowdInArea : MonoBehaviour
 
     void WriteCountToFile()
     {
-        wr.AppendWrite(file,count);
+        //wr.AppendWrite(file,count);
+        //append writes the data
+        StreamWriter sw = new StreamWriter(file,true);
+        string toadd = Time.time + "," + count;
+        sw.WriteLine(toadd);
+        sw.Close();
     }
 
 }

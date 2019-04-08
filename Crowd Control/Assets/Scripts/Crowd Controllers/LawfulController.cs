@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LawfulController : LeavingCrowdController
 {
-
-
+    void Start()
+    {
+        ctype = CrowdType.Lawful;
+    }
 }

@@ -6,6 +6,7 @@ public class InstigatorController : CrowdController
 {
     void Start(){
         Invoke("setFinalDestination",4);
+        ctype = CrowdType.Instigator;
         base.Start();
     }
     public InstigatorController(){
