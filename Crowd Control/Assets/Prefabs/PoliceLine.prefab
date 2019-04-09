@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7063431192109482147}
   - component: {fileID: 7063431192109482144}
   - component: {fileID: 7063431192109482146}
-  - component: {fileID: 3329967583772376038}
   - component: {fileID: 2317477278185447969}
+  - component: {fileID: 5376335184352831335}
+  - component: {fileID: 3336503136322988032}
   m_Layer: 14
   m_Name: PoliceLine
   m_TagString: Untagged
@@ -148,7 +149,7 @@ MonoBehaviour:
   speed: 5
   overlap: 0.1
   moving: 0
---- !u!65 &3329967583772376038
+--- !u!65 &2317477278185447969
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,9 +160,9 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 32, y: 2, z: 10}
-  m_Center: {x: 0, y: 1, z: 2}
---- !u!65 &2317477278185447969
+  m_Size: {x: 40, y: 2, z: 13}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!65 &5376335184352831335
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,5 +173,27 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 32, y: 2, z: 5.5}
+  m_Size: {x: 32, y: 2, z: 5}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!195 &3336503136322988032
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7063431192109482145}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 3.5
+  m_Speed: 7
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.2
+  m_BaseOffset: 0.1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 0

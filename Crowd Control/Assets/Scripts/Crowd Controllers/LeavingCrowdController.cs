@@ -14,7 +14,7 @@ public class LeavingCrowdController : CrowdController
     public LeavingCrowdController(){
         influence = -10f;
     }
-    void Start()
+    protected void Start()
     {
         
         setFinalDestination();

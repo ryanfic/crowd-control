@@ -24,38 +24,6 @@ public class PoliceController : MonoBehaviour
     }
 
 
-    void FixedUpdate()
-    {
-        //Up/Down/Left/Right movement
-        /*float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(moveHorizontal,0.0f,moveVertical);
-        rb.AddForce(movement*speed);*/
-
-        //Set destination by casting a ray and using NavMeshAgent
-        /*Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        RaycastHit hit;
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            if(Physics.Raycast(ray, out hit, 100))
-            {
-                agent.destination = hit.point;
-            }
-        }*/
-    }
-    /*to get time when enter bus stop */
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag =="BusStop")
-        {
-            //say time
-           // Debug.Log("Reached Bus Stop at " +Time.time);
-
-        } 
-    }
     /*Squish together to allow movement in smaller corridors */
     public void squishTogether()
     {
@@ -63,5 +31,13 @@ public class PoliceController : MonoBehaviour
         Debug.Log("Relocating to" + pos);
         /*pos.x+=5;*/
         gameObject.transform.Translate(pos);
+    }
+    public void enableNMObstacle()
+    {
+        gameObject.GetComponent<NavMeshObstacle>().enabled = true;
+    }
+    public void disableNMObstacle()
+    {
+        gameObject.GetComponent<NavMeshObstacle>().enabled = false;
     }
 }

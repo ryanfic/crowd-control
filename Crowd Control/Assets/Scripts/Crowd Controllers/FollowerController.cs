@@ -20,8 +20,8 @@ public class FollowerController : LeavingCrowdController
         //base.Start();
         riotLocation = gameObject.transform.position;
         setFinalDestination();
-        Invoke("Move",4);
-        moving = true;
+        //Invoke("Move",4);
+        //moving = true;
         Destroy(transform.GetChild(0).gameObject);
         ctype = CrowdType.Follower;
         
@@ -30,6 +30,11 @@ public class FollowerController : LeavingCrowdController
         riotLocation = getNearestAOI().transform.position;
     }
     void Update(){
+        if(moving&&gameObject.GetComponent<NavMeshAgent>().pathStatus == NavMeshPathStatus.PathInvalid)
+        {
+            Debug.Log("Path invalid, updating");
+            Move();
+        }
         if(!rioting && riotlevel>=riotthreshold)
         {
             startRioting();
@@ -37,12 +42,13 @@ public class FollowerController : LeavingCrowdController
         else if(rioting && riotlevel<=riotthreshold){
             stopRioting();
         }
+        
     }
 
     private void startRioting(){
         rioting = true;
-        //gameObject.GetComponent<MeshRenderer>().material = material[1];
-        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material.color = new Color(230/255f, 126/255f, 34/255f, 1f);//241f/255f, 90f/255f, 34f/255f, 1f);
+        gameObject.GetComponent<MeshRenderer>().material = material[1];//When using capsules
+        //gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material.color = new Color(230/255f, 126/255f, 34/255f, 1f);//241f/255f, 90f/255f, 34f/255f, 1f);//when using human model
         SkinnedMeshRenderer[] mesh = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach(SkinnedMeshRenderer m in mesh)
         {
@@ -58,12 +64,12 @@ public class FollowerController : LeavingCrowdController
     }
     private void stopRioting(){
         rioting = false;
-        SkinnedMeshRenderer[] mesh = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+        /*SkinnedMeshRenderer[] mesh = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();//If using human models
         foreach(SkinnedMeshRenderer m in mesh)
         {
             m.material.color = Color.yellow;
-        }
-        //gameObject.GetComponent<MeshRenderer>().material = material[0];
+        }*/
+        gameObject.GetComponent<MeshRenderer>().material = material[0]; //if using capsules
         if(moving)
         {
             Move();
@@ -74,7 +80,7 @@ public class FollowerController : LeavingCrowdController
     private void updateAOInf(){
         gameObject.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(influence);
     }
-    protected void Move()
+    protected override void Move()
     {
         if(rioting){
             gameObject.GetComponent<NavMeshAgent>().SetDestination(riotLocation);
@@ -102,9 +108,9 @@ public class FollowerController : LeavingCrowdController
         }
         
     }
-    void OnTriggerEnter(Collider other){
+    /* void OnTriggerEnter(Collider other){
         if(other.gameObject.tag == "AreaOfInfluence"){
-            if(/*!hasRiotLocation*/true){
+            if(true){
                 if(other.gameObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Instigator"))
                     ig=other.gameObject.transform.parent.GetComponent<InstigatorController>();
                     if(ig!=null&&ig.getFinalDestination()!=null){
@@ -114,5 +120,5 @@ public class FollowerController : LeavingCrowdController
                     }
                 }
         }
-    }
+    }*/
 }

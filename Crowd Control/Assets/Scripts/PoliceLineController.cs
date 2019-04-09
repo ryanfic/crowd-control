@@ -37,9 +37,35 @@ public class PoliceLineController : MonoBehaviour
     }
 
     void Update(){
-        if(moving){
+        /* if(moving){
             Move();
+        }*/
+        //if the agent has reached its destination
+        if(reachedNextWaypoint())
+        {
+            //if has another waypoint
+            if(waypoints.Count>0)
+            {
+                //move to next waypoint
+                moveToNextWaypoint();
+                Debug.Log("Moving to next waypoint!");
+            }
+            //otherwise switch to standing still mode
+             else
+            {
+                //disable navmeshagent
+                agent.enabled = false;
+                //add obstacles back to police
+                PoliceController pc;
+                foreach(GameObject p in police)
+                {
+                        pc = p.GetComponent<PoliceController>();
+                    pc.enableNMObstacle();
+                }
+            }
         }
+                    
+        
     }
 
     private void SpawnPolice()
@@ -76,6 +102,21 @@ public class PoliceLineController : MonoBehaviour
             p.GetComponent<PoliceController>().PoliceNum=count;
             count++;
         } */
+    }
+    private bool reachedNextWaypoint()
+    {
+        //if the agent has reached its destination
+        if(agent.enabled&&!agent.pathPending)
+        {
+            if(agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if(!agent.hasPath||agent.velocity.sqrMagnitude ==0f)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     public void moveToNearestBusStop(IList<GameObject> stops)
     {
@@ -129,8 +170,14 @@ public class PoliceLineController : MonoBehaviour
     }
     public void moveToGivenPosition(Vector3 pos)
     {
-        setTargetPosition(pos);
-        //AgentMove(pos);
+        PoliceController pc;
+        foreach(GameObject p in police)
+        {
+            pc = p.GetComponent<PoliceController>();
+            pc.disableNMObstacle();
+        }
+        //setTargetPosition(pos);
+        AgentMove(pos);
     }
     private void setTargetPosition(Vector3 targetpos)
     {
@@ -219,6 +266,7 @@ public class PoliceLineController : MonoBehaviour
     public void AgentMove(Vector3 targetpos)
     {
         //Debug.Log("Moving");
+        agent.enabled = true;
         agent.SetDestination(targetpos);
     }
 
@@ -242,12 +290,12 @@ public class PoliceLineController : MonoBehaviour
         waypointDelay.Enqueue(delay);
     }
     /* When things collide with the trigger on the Policeline*/
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.layer ==13/*Police layer ||collision.gameObject.layer ==12 /*Crowd layer*/ ||collision.gameObject.layer==14/*PoliceLine layer*/ ){
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    if(collision.gameObject.layer ==13/*Police layer ||collision.gameObject.layer ==12 /*Crowd layer*/ ||collision.gameObject.layer==14/*PoliceLine layer*/ ){
             /*Debug.Log("Ignoring" + collision.gameObject.name);*/
-            Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(),GetComponent<Collider>());
-        }
+    //        Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(),GetComponent<Collider>());
+    //    }
         /* if(collision.gameObject.layer==9/*Building layer )
         {
             Debug.Log("Building collision");
@@ -267,31 +315,36 @@ public class PoliceLineController : MonoBehaviour
             Debug.DrawRay(transform.position,direction, Color.green, 500);*/
             /*squishTogether();
         }*/
-    }
+    //}
     void OnTriggerEnter(Collider collider)
     {
-        if(collider.gameObject.layer ==13/*Police layer */||collider.gameObject.layer ==12 /*Crowd layer */||collider.gameObject.layer==14/*PoliceLine layer */){
+        //if(collider.gameObject.layer ==13/*Police layer */||collider.gameObject.layer ==12 /*Crowd layer */||collider.gameObject.layer==14/*PoliceLine layer */){
             /*Debug.Log("Ignoring" + collision.gameObject.name);*/
-            Physics.IgnoreCollision(collider.gameObject.GetComponent<Collider>(),GetComponent<Collider>());
-        }
-        if(collider.gameObject.layer==9/*Building layer */)
-        {
-            Debug.Log("Building triggered");
-            foreach(GameObject p in police)
-            {
-                Ray ray = new Ray(p.transform.position,gameObject.transform.forward);
-                RaycastHit hit;
+        //    Physics.IgnoreCollision(collider.gameObject.GetComponent<Collider>(),GetComponent<Collider>());
+        //}
+        //if(collider.gameObject.layer==9/*Building layer */)
+        //{
+         //   Debug.Log("Building triggered");
+        //    foreach(GameObject p in police)
+        //    {
+        //        Ray ray = new Ray(p.transform.position,gameObject.transform.forward);
+        //        RaycastHit hit;
                 /*Debug.DrawRay(pos,Vector3.down, Color.green, 500); */
-			    if(Physics.Raycast(ray, out hit, 1000)) {
+		//	    if(Physics.Raycast(ray, out hit, 1000)) {
                 /*Debug.Log("Hit"); */
-				if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Buildings")) {
-                    Vector3 location = new Vector3(hit.point.x,hit.point.y,hit.point.z);
-                    Debug.Log("Going to collide with a building!" + hit.point);
+		//		if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Buildings")) {
+        //            Vector3 location = new Vector3(hit.point.x,hit.point.y,hit.point.z);
+        //            Debug.Log("Going to collide with a building!" + hit.point);
                     /*Debug.Log("Hit " +hit.transform.gameObject.name +" at: " +location); */
-				}
-			}
-                Debug.DrawRay(p.transform.position,gameObject.transform.forward, Color.green, 500);
-            }
+		//		}
+		//	}
+        //        Debug.DrawRay(p.transform.position,gameObject.transform.forward, Color.green, 500);
+         //   }
+        //}
+
+
+        if(collider.gameObject.layer ==19/*Lawful layer */||collider.gameObject.layer ==18 /*Follower layer */||collider.gameObject.layer==17/*Instigator layer */){
+            collider.gameObject.GetComponent<CrowdController>().policeContact();
         }
     }
     /*If the police line will collide with a Building (collision with a collider on building layer), shrink the line */

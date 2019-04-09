@@ -53,7 +53,8 @@ public class CrowdGenerator : MonoBehaviour
     void randomSpawnCrowd()
     {
         //Randomly spawn the crowd
-        for(int i=0;i<4;i++){
+        //for(int i=0;i<4;i++){
+            for(int i=-1;i<4;i++){
                  //StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-26.2-i*30),29f,(float)(12.1+30*i)), 140,25,3)); //spawn up the road
             StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-116.2+i*30),29f,(float)(102.1-30*i)), 150,25,3)); //spawn down the road
         }
@@ -184,12 +185,14 @@ public class CrowdGenerator : MonoBehaviour
         ncrowd.transform.Find("AreaOfInfluence").GetComponent<SphereCollider>().radius=12;
             ncrowd.AddComponent<InstigatorController>();
             ncrowd.layer = LayerMask.NameToLayer("Instigator");
-            SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
+            //When there is a human model
+            /* SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach(SkinnedMeshRenderer m in mesh)
             {
                 m.material.color = Color.red;
-            }
-            //ncrowd.GetComponent<MeshRenderer>().material = material[0];
+            }*/
+            //When there is only capsule model
+            ncrowd.GetComponent<MeshRenderer>().material = material[0];
             ncrowd.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(ncrowd.GetComponent<InstigatorController>().getInfluence());
             totalInstigators++;
     }
@@ -197,13 +200,15 @@ public class CrowdGenerator : MonoBehaviour
     {
         ncrowd.AddComponent<FollowerController>();
             ncrowd.layer = LayerMask.NameToLayer("Follower");
-            //ncrowd.GetComponent<MeshRenderer>().material = material[1];
+            //When there is only a capsule model
+            ncrowd.GetComponent<MeshRenderer>().material = material[1];
             FollowerController fc =  ncrowd.GetComponent<FollowerController>();
-            SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
+            //When there is a human model
+            /* SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach(SkinnedMeshRenderer m in mesh)
             {
                 m.material.color = Color.yellow;
-            }
+            }*/
             fc.material[0]= material[1];
             fc.material[1]= material[2];
             ncrowd.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(fc.getInfluence());
@@ -213,12 +218,14 @@ public class CrowdGenerator : MonoBehaviour
     {
         ncrowd.AddComponent<LawfulController>();
             ncrowd.layer = LayerMask.NameToLayer("Lawful");
-            SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
+            //When there is a human model
+            /* SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach(SkinnedMeshRenderer m in mesh)
             {
                 m.material.color = Color.green;
-            }
-            //ncrowd.GetComponent<MeshRenderer>().material = material[3];
+            }*/
+            //When there is only a capsule model
+            ncrowd.GetComponent<MeshRenderer>().material = material[3];
             ncrowd.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(ncrowd.GetComponent<LawfulController>().getInfluence());
     }
 

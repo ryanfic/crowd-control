@@ -7,5 +7,6 @@ public class LawfulController : LeavingCrowdController
     void Start()
     {
         ctype = CrowdType.Lawful;
+        base.Start();
     }
 }

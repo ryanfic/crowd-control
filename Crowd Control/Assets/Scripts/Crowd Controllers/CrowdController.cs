@@ -9,21 +9,29 @@ public abstract class CrowdController : MonoBehaviour
     protected int value = 66; //The number of people represented by a single crowd agent in the simulation
     protected Vector3 finalDestination; // The place the agent wants to go overall
     protected Vector3 currDestination; // The place the agent is moving due to crowd dynamics
-    protected bool moving = false;
+    public bool moving = false;
     protected bool fleeing = false;
     protected float influence = 10f;
     //agents in neighbourhood of interaction
-    
+    protected IList<GameObject> crowdinnoi = new List<GameObject>();
+    protected NavMeshAgent agent;
 
     protected CrowdType ctype;
 
     protected void Start(){
-        Invoke("Move",4);
-        moving = true;
+        //moving = true;
+        //Invoke("Move",4f);
+        //agent = gameObject.GetComponent<NavMeshAgent>();
+        
     }
     protected void Update(){
         if(Input.GetKeyDown("q")){
             //Debug.Log("Q PRESSED");
+            Move();
+        }
+        if(moving&&gameObject.GetComponent<NavMeshAgent>().pathStatus == NavMeshPathStatus.PathInvalid)
+        {
+            Debug.Log("Path invalid, updating");
             Move();
         }
     }
@@ -51,10 +59,21 @@ public abstract class CrowdController : MonoBehaviour
         //If crowd seen is fleeing, flee in the same direction
 
     }
-    protected void Move(){
+    protected virtual void Move(){
         //if there are people around moving, update the speed
-        //if there are people around moving, update the 
+        //if there are people around moving, update the angle
         gameObject.GetComponent<NavMeshAgent>().SetDestination(finalDestination);
+        //Debug.Log("Next spot "+(gameObject.GetComponent<NavMeshAgent>().nextPosition-gameObject.transform.position).ToString());
+        /* if(crowdinnoi.Count>0&&gameObject.GetComponent<NavMeshAgent>().nextPosition!=Vector3.zero){
+            Vector3 result = gameObject.GetComponent<NavMeshAgent>().nextPosition;//new Vector3(0f,0f,0f);
+            foreach(GameObject crowd in crowdinnoi)
+            {
+                result += (crowd.GetComponent<NavMeshAgent>().nextPosition)/(Vector3.Distance(gameObject.transform.position,crowd.gameObject.transform.position));
+            }
+            gameObject.GetComponent<NavMeshAgent>().SetDestination(result);
+}*/
+
+
     }
 
     //Destination 1 via granville: -732.9075 21.81492 -448.9697
@@ -97,8 +116,37 @@ public abstract class CrowdController : MonoBehaviour
         return value;
     }
 
+    public void crowdEnterNOI(GameObject crowd)
+    {
+        crowdinnoi.Add(crowd);
+        if(crowd.GetComponent<CrowdController>().isMoving()&&!moving)
+        {
+            moving = true;
+            Move();
+        }
+        //Debug.Log("Entered NOI!");
+    }
+    public void crowdExitNOI(GameObject crowd)
+    {
+        crowdinnoi.Remove(crowd);
+        if(crowd.GetComponent<CrowdController>().isMoving()&&!moving)
+        {
+            moving = true;
+            Move();
+        }
+        //Debug.Log("Exited NOI!");
+    }
     public CrowdType getCrowdType()
     {
         return ctype;
+    }
+    public void policeContact()
+    {
+        moving = true;
+        Move();
+    }
+    public bool isMoving()
+    {
+        return moving;
     }
 }

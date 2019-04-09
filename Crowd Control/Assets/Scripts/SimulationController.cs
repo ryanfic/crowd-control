@@ -87,10 +87,12 @@ public class SimulationController : MonoBehaviour
         //StartCoroutine(delayAddPL(new Vector3((float)(-4.0),27.3f,(float)(-10.6)),rot,3,waypoints,delays));//first simulation pl location
         //StartCoroutine(delayAddPL(new Vector3((float)(-23.6),28.0f,(float)(9.8)),rot,3,waypoints,delays));//second simulation pl location to test moving around pl
 
-        Queue<float> delays = new Queue<float>();
+         Queue<float> delays = new Queue<float>();
          //FIRST STREET: Start PL from -34.7, 35.0, 97.0   Move to:  -154.7, 26.4, -24.1
+         //New destination: (-170.8, 24.7, -73.6)
          Queue<Vector3> fwaypoints = new Queue<Vector3>();
         fwaypoints.Enqueue(new Vector3(-154.7f, 26.4f, -24.1f));
+        //fwaypoints.Enqueue(new Vector3(-170.8f, 24.7f, -73.6f));
         Quaternion frot = Quaternion.Euler(0f,-135.2f,0f);
         StartCoroutine(delayAddPL(new Vector3(-40.3f,30.9f,89.5f),frot,3,fwaypoints,delays));
         
@@ -98,19 +100,22 @@ public class SimulationController : MonoBehaviour
         //coliders 32 2 5.5
 
         //SECOND STREET: Start PL from -78.3, 35.0, 123.5   Move to:  -197.7, 27.4, -3.4
-        /* Queue<Vector3> swaypoints = new Queue<Vector3>();
+         Queue<Vector3> swaypoints = new Queue<Vector3>();
         swaypoints.Enqueue(new Vector3(-197.7f, 27.4f, -3.4f));
         Quaternion srot = Quaternion.Euler(0f,-135.2f,0f);
         StartCoroutine(delayAddPL(new Vector3(-78.3f, 32.5f, 123.5f),srot,3,swaypoints,delays));
-*/
+
         //THIRD STREET: Start PL from -94.2, 35.0, 176.8   Move to:  -221.9, 29.1, 37.2
+        //New destination: (-324.5, 26.9, -17.3)
         Queue<Vector3> twaypoints = new Queue<Vector3>();
         twaypoints.Enqueue(new Vector3(-212.3f, 29.1f, 56.5f));
+        //twaypoints.Enqueue(new Vector3(-324.5f, 26.9f, -17.3f));
         Quaternion trot = Quaternion.Euler(0f,-135.2f,0f);
         StartCoroutine(delayAddPL(new Vector3(-113.6f, 33.2f, 158.2f),trot,3,twaypoints,delays));
 
         
         Invoke("addAOI",0);
+        //Invoke("MovePLs",4);
         //move to -6.8 28 -3.2
         
     }
@@ -255,7 +260,7 @@ public class SimulationController : MonoBehaviour
         {
             foreach(GameObject pl in PoliceLines){
                 Debug.Log("Started moving through waypoints at: " + Time.time);
-                pl.GetComponent<PoliceLineController>().delayedMoveToNextWaypoint();
+                pl.GetComponent<PoliceLineController>().moveToNextWaypoint();
             }
             /*For testing hitGroundAtPos
             Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
@@ -391,7 +396,8 @@ public class SimulationController : MonoBehaviour
         GameObject nline = Instantiate(PoliceLinetemplate, pos, rot);
         PoliceLines.Add(nline);
         pltot++;
-        //Invoke("delayMovePL",0f);
+        //MovePL(nline);
+        
     }
     IEnumerator delayAddPL(Vector3 pos, Quaternion rot , int time, Queue<Vector3> points,Queue<float> delays)
     {
@@ -401,16 +407,25 @@ public class SimulationController : MonoBehaviour
         nline.GetComponent<PoliceLineController>().addWaypoints(points,delays);
         PoliceLines.Add(nline);
         pltot++;
-        //Invoke("delayMovePL",0f);
+        //MovePL(nline);
     }
-    void delayMovePL()
+    void MovePL(GameObject pl)
+    {
+        Debug.Log("Started in simulationcontroller");
+        pl.GetComponent<PoliceLineController>().moveToNextWaypoint();
+        
+        //Debug.Log("Called movement!");
+    }
+    void MovePLs()
     {
         foreach(GameObject pl in PoliceLines){
-                Debug.Log("Started moving through waypoints at: " + Time.time);
-                pl.GetComponent<PoliceLineController>().startDelayedMoveToNextWaypoint(0f);
+                //Debug.Log("Started moving through waypoints at: " + Time.time);
+                Debug.Log("Started in simulationcontroller");
+                pl.GetComponent<PoliceLineController>().moveToNextWaypoint();
         }
-        Debug.Log("Called movement!");
+        //Debug.Log("Called movement!");
     }
+
     private void getNumPolice(GameObject pl){
         foreach(var el in PoliceLines){
             PoliceLineController plScript = (PoliceLineController)el.GetComponent("PoliceLineController");

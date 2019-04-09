@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7466130292903690713}
   - component: {fileID: 7345213382722686366}
-  m_Layer: 12
+  - component: {fileID: 120618772635080035}
+  m_Layer: 20
   m_Name: Neighbourhood of Interaction
-  m_TagString: Untagged
+  m_TagString: NOI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,3 +45,15 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 5.569
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &120618772635080035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5394853038477429912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f37cc058c9a99438a16b4eaf334d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
