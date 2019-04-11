@@ -48,7 +48,7 @@ public class PoliceLineController : MonoBehaviour
             {
                 //move to next waypoint
                 moveToNextWaypoint();
-                Debug.Log("Moving to next waypoint!");
+                //Debug.Log("Moving to next waypoint!");
             }
             //otherwise switch to standing still mode
              else
@@ -123,7 +123,7 @@ public class PoliceLineController : MonoBehaviour
         GameObject targetStop = getNearestBusStop(stops);
         moveToGivenPosition(targetStop.transform.position);
         //To get time when start moving to bus stop
-        Debug.Log("Started moving at " +Time.time);
+        //Debug.Log("Started moving at " +Time.time);
 
 
         //Using my movement method
@@ -193,7 +193,7 @@ public class PoliceLineController : MonoBehaviour
         moving = true;
     }
     public void moveToNextWaypoint(){
-            Debug.Log("Next waypoint: " + waypoints.Peek()+", started moving at: " +Time.time);
+            //Debug.Log("Next waypoint: " + waypoints.Peek()+", started moving at: " +Time.time);
             moveToGivenPosition(waypoints.Dequeue());
     }
     public void delayedMoveToNextWaypoint(){

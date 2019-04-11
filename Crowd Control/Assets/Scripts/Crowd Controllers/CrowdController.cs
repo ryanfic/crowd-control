@@ -21,7 +21,7 @@ public abstract class CrowdController : MonoBehaviour
     protected void Start(){
         //moving = true;
         //Invoke("Move",4f);
-        //agent = gameObject.GetComponent<NavMeshAgent>();
+        agent = gameObject.GetComponent<NavMeshAgent>();
         
     }
     protected void Update(){
@@ -31,7 +31,7 @@ public abstract class CrowdController : MonoBehaviour
         }
         if(moving&&gameObject.GetComponent<NavMeshAgent>().pathStatus == NavMeshPathStatus.PathInvalid)
         {
-            Debug.Log("Path invalid, updating");
+            //Debug.Log("Path invalid, updating");
             Move();
         }
     }

@@ -12,6 +12,11 @@ public class FollowerController : LeavingCrowdController
     protected Vector3 riotLocation;
     protected InstigatorController ig;
     public Material[] material = new Material[2];
+    private NavMeshPath path;
+    private float elapsed;
+    private Vector3 destination;
+    private Vector3 target; 
+    private float pathUpdateFrequency = 2.0f;
 
     void Start()
     {
@@ -24,7 +29,10 @@ public class FollowerController : LeavingCrowdController
         //moving = true;
         Destroy(transform.GetChild(0).gameObject);
         ctype = CrowdType.Follower;
-        
+        agent = gameObject.GetComponent<NavMeshAgent>();
+        path = new NavMeshPath();
+        elapsed = pathUpdateFrequency;
+        StartCoroutine(TravelToDestination());
     }
     void initalizeAOI(){
         riotLocation = getNearestAOI().transform.position;
@@ -32,7 +40,7 @@ public class FollowerController : LeavingCrowdController
     void Update(){
         if(moving&&gameObject.GetComponent<NavMeshAgent>().pathStatus == NavMeshPathStatus.PathInvalid)
         {
-            Debug.Log("Path invalid, updating");
+            //Debug.Log("Path invalid, updating");
             Move();
         }
         if(!rioting && riotlevel>=riotthreshold)
@@ -41,6 +49,13 @@ public class FollowerController : LeavingCrowdController
         }
         else if(rioting && riotlevel<=riotthreshold){
             stopRioting();
+        }
+             elapsed += Time.deltaTime;
+        if (elapsed > pathUpdateFrequency)
+        {
+         elapsed -= pathUpdateFrequency;
+         NavMesh.CalculatePath (transform.position, destination, agent.areaMask, path);
+         agent.SetPath (path);
         }
         
     }
@@ -83,12 +98,25 @@ public class FollowerController : LeavingCrowdController
     protected override void Move()
     {
         if(rioting){
-            gameObject.GetComponent<NavMeshAgent>().SetDestination(riotLocation);
+            //gameObject.GetComponent<NavMeshAgent>().SetDestination(riotLocation);
+            destination = riotLocation;
         }
         else{
-            gameObject.GetComponent<NavMeshAgent>().SetDestination(finalDestination);
+            //gameObject.GetComponent<NavMeshAgent>().SetDestination(finalDestination);
+            destination = finalDestination;
         }
     }
+     IEnumerator TravelToDestination ()
+    {
+     //print ("Traveling towards destination..");
+     destination = target;
+     while (Vector3.Distance (transform.position, target) > 0.16f)
+     {
+         yield return null;
+     }
+     agent.Warp(destination);
+     //print("Reached destination!");
+     }
     public void beInfluenced(float influence){
         if(influence>0){
             if(riotlevel+influence<=100f)

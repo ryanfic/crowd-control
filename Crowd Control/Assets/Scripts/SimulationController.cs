@@ -58,7 +58,7 @@ public class SimulationController : MonoBehaviour
             
         }*/
         
-        /*Quaternion rot = new Quaternion (0.0f,-0.4f,0.0f,0.9f);
+        /* Quaternion rot = new Quaternion (0.0f,-0.4f,0.0f,0.9f);
         Queue<Vector3> waypoints = new Queue<Vector3>();
         Queue<float> delays = new Queue<float>();
         //delays.Enqueue(10f); //For Vancouver Conference Run
@@ -87,11 +87,15 @@ public class SimulationController : MonoBehaviour
         //StartCoroutine(delayAddPL(new Vector3((float)(-4.0),27.3f,(float)(-10.6)),rot,3,waypoints,delays));//first simulation pl location
         //StartCoroutine(delayAddPL(new Vector3((float)(-23.6),28.0f,(float)(9.8)),rot,3,waypoints,delays));//second simulation pl location to test moving around pl
 
-         Queue<float> delays = new Queue<float>();
-         //FIRST STREET: Start PL from -34.7, 35.0, 97.0   Move to:  -154.7, 26.4, -24.1
+        Queue<float> delays = new Queue<float>();
+          //FIRST STREET: Start PL from -34.7, 35.0, 97.0   Move to:  -154.7, 26.4, -24.1
          //New destination: (-170.8, 24.7, -73.6)
          Queue<Vector3> fwaypoints = new Queue<Vector3>();
-        fwaypoints.Enqueue(new Vector3(-154.7f, 26.4f, -24.1f));
+        //original waypoint
+        //fwaypoints.Enqueue(new Vector3(-154.7f, 26.4f, -24.1f));
+        //Updated trial location
+        fwaypoints.Enqueue(new Vector3(-199.4f, 24.7f, -69.3f));
+        //second waypoint
         //fwaypoints.Enqueue(new Vector3(-170.8f, 24.7f, -73.6f));
         Quaternion frot = Quaternion.Euler(0f,-135.2f,0f);
         StartCoroutine(delayAddPL(new Vector3(-40.3f,30.9f,89.5f),frot,3,fwaypoints,delays));
@@ -99,16 +103,23 @@ public class SimulationController : MonoBehaviour
 
         //coliders 32 2 5.5
 
-        //SECOND STREET: Start PL from -78.3, 35.0, 123.5   Move to:  -197.7, 27.4, -3.4
+        /* //SECOND STREET: Start PL from -78.3, 35.0, 123.5   Move to:  -197.7, 27.4, -3.4
          Queue<Vector3> swaypoints = new Queue<Vector3>();
-        swaypoints.Enqueue(new Vector3(-197.7f, 27.4f, -3.4f));
+        //original location
+        //swaypoints.Enqueue(new Vector3(-197.7f, 27.4f, -3.4f));
+        //Updated trial location
+        swaypoints.Enqueue(new Vector3(-234.0f, 25.7f, -33.6f));
         Quaternion srot = Quaternion.Euler(0f,-135.2f,0f);
-        StartCoroutine(delayAddPL(new Vector3(-78.3f, 32.5f, 123.5f),srot,3,swaypoints,delays));
+        StartCoroutine(delayAddPL(new Vector3(-78.3f, 32.5f, 123.5f),srot,3,swaypoints,delays));*/
 
-        //THIRD STREET: Start PL from -94.2, 35.0, 176.8   Move to:  -221.9, 29.1, 37.2
+         //THIRD STREET: Start PL from -94.2, 35.0, 176.8   Move to:  -221.9, 29.1, 37.2
         //New destination: (-324.5, 26.9, -17.3)
         Queue<Vector3> twaypoints = new Queue<Vector3>();
-        twaypoints.Enqueue(new Vector3(-212.3f, 29.1f, 56.5f));
+        //first trial location
+        //twaypoints.Enqueue(new Vector3(-212.3f, 29.1f, 56.5f));
+        //updated trial location
+        twaypoints.Enqueue(new Vector3(-292.8f, 26.1f, -30.1f));
+        //Move out of the way
         //twaypoints.Enqueue(new Vector3(-324.5f, 26.9f, -17.3f));
         Quaternion trot = Quaternion.Euler(0f,-135.2f,0f);
         StartCoroutine(delayAddPL(new Vector3(-113.6f, 33.2f, 158.2f),trot,3,twaypoints,delays));
@@ -327,7 +338,7 @@ public class SimulationController : MonoBehaviour
         }*/
     }
     void addAOI(){
-        Vector3 pos = new Vector3(-117.3f,30f,103.5f);
+        Vector3 pos = new Vector3(-117.3f,33f,103.5f);
         Quaternion spawnRotation = Quaternion.Euler(0f,44.69f,0f);//new Quaternion(0.0f,0.4f,0.0f,0.9f);
         GameObject aoi = Instantiate(AOITemplate, pos, spawnRotation);
     }
