@@ -29,14 +29,7 @@ public class CrowdGenerator : MonoBehaviour
     void Start()
     {
         crowdPercentLawful = 100 - crowdPercentInstigator - crowdPercentFollower;
-        /*for(int i=0;i<10;i++){
-                 StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-66+i*5),29f,(float)(50-5*i)), 20,15,3));
-            
-        }*/
-        //4:-113.2818 33.1 97.550
-        //3: -82.7300 31.7 66.288
-        //2: -46.649 30.3 30.999
-        //1: -26.2 29.44 12.1
+
         float timetospawn = 3.1f;
         if(File.Exists(compositionfile))
         {
@@ -45,21 +38,19 @@ public class CrowdGenerator : MonoBehaviour
          else
         {
             randomSpawnCrowd();
+            Invoke("WriteCrowdLocation",timetospawn+4f);
         }
         Invoke("WriteCrowdRatios",timetospawn);
-        Invoke("WriteCrowdLocation",timetospawn+4f);
+        
         //Invoke("RemoveSelf",timetospawn+0.5f);
     }
     void randomSpawnCrowd()
     {
         //Randomly spawn the crowd
-        //for(int i=0;i<4;i++){
-            for(int i=-1;i<4;i++){
-                 //StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-26.2-i*30),29f,(float)(12.1+30*i)), 140,25,3)); //spawn up the road
+        for(int i=-1;i<4;i++){
+            //StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-26.2-i*30),29f,(float)(12.1+30*i)), 140,25,3)); //spawn up the road
             StartCoroutine(delaySpawnCrowdAroundSpot(new Vector3((float)(-116.2+i*30),29f,(float)(102.1-30*i)), 150,25,3)); //spawn down the road
         }
-        //Write the crowd data
-        //Invoke("WriteCrowdRatios",timetospawn);
     }
     void dataSpawnCrowd()
     {
@@ -107,61 +98,21 @@ public class CrowdGenerator : MonoBehaviour
         float rand = Random.value*100;
         //If the roll is lower than the chance to get Instigator, make the crowd agent an instigator
         if(rand<crowdPercentInstigator&&(100f*totalInstigators)/tospawn<crowdPercentInstigator){
-            /* ncrowd.transform.Find("AreaOfInfluence").GetComponent<SphereCollider>().radius=12;
-            ncrowd.AddComponent<InstigatorController>();
-            ncrowd.layer = LayerMask.NameToLayer("Instigator");
-            SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach(SkinnedMeshRenderer m in mesh)
-            {
-                m.material.color = Color.red;
-            }
-            //ncrowd.GetComponent<MeshRenderer>().material = material[0];
-            ncrowd.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(ncrowd.GetComponent<InstigatorController>().getInfluence());
-            totalInstigators++;*/
             changeAgentToInstigator(ncrowd);
         }
         //If the roll is above the chance to get Instigator but lower than the chance to get Follower, make the crowd agent an follower
         else if(rand<crowdPercentInstigator+crowdPercentFollower&&(100f*totalFollowers)/tospawn<crowdPercentFollower){
-            /*ncrowd.AddComponent<FollowerController>();
-            ncrowd.layer = LayerMask.NameToLayer("Follower");
-            //ncrowd.GetComponent<MeshRenderer>().material = material[1];
-            FollowerController fc =  ncrowd.GetComponent<FollowerController>();
-            SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach(SkinnedMeshRenderer m in mesh)
-            {
-                m.material.color = Color.yellow;
-            }
-            fc.material[0]= material[1];
-            fc.material[1]= material[2];
-            ncrowd.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(fc.getInfluence());
-            totalFollowers++;*/
             changeAgentToFollower(ncrowd);
         }
         //Else make it lawful
         else{
-            /* ncrowd.AddComponent<LawfulController>();
-            ncrowd.layer = LayerMask.NameToLayer("Lawful");
-            SkinnedMeshRenderer[] mesh = ncrowd.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach(SkinnedMeshRenderer m in mesh)
-            {
-                m.material.color = Color.green;
-            }
-            //ncrowd.GetComponent<MeshRenderer>().material = material[3];
-            ncrowd.GetComponentInChildren<AreaOfInfluenceController>().setInfluence(ncrowd.GetComponent<LawfulController>().getInfluence());*/
             changeAgentToLawful(ncrowd);
         }
         crowdlist.Add(ncrowd);
-        //crowdtot++;
-        //CrowdController cScript = (CrowdController)ncrowd.GetComponent("CrowdController");
-        //RlCrowdTot+=cScript.getValue();
-        /*To print how many crowd objects exist */
-        /* Debug.Log("New Crowd Total:" + RlCrowdTot);*/
-        //CreateObject(baseCrowdAgent, hit.point, "CrowdAgent (" + crowdCount + ")", crowdAgents.transform).GetComponent<NavMeshAgent>();
     }
     void addCrowdAgent(Vector3 pos, CrowdType ctype)
     {
         Quaternion spawnRotation = Quaternion.identity;
-        //pos.y = hitGroundAtPos(pos).y;
         GameObject ncrowd = Instantiate(crowdtemplate, pos, spawnRotation);
 
         //If the type is a Lawful, make the agent a Lawful
@@ -281,6 +232,7 @@ public class CrowdGenerator : MonoBehaviour
         sw.Close();
     }
 
+    //removes the script
     void RemoveSelf()
     {
         Destroy(this);

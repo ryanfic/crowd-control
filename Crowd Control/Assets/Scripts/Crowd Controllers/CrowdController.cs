@@ -8,15 +8,14 @@ public abstract class CrowdController : MonoBehaviour
 {
     protected int value = 66; //The number of people represented by a single crowd agent in the simulation
     protected Vector3 finalDestination; // The place the agent wants to go overall
-    protected Vector3 currDestination; // The place the agent is moving due to crowd dynamics
-    public bool moving = false;
-    protected bool fleeing = false;
-    protected float influence = 10f;
-    //agents in neighbourhood of interaction
-    protected IList<GameObject> crowdinnoi = new List<GameObject>();
-    protected NavMeshAgent agent;
 
-    protected CrowdType ctype;
+    public bool moving = false; //is the crowd agent moving
+    protected float influence = 10f; // how much the agent influences other agents
+    
+    protected IList<GameObject> crowdinnoi = new List<GameObject>();//agents in neighbourhood of interaction
+    protected NavMeshAgent agent; //used for movement
+
+    protected CrowdType ctype; //defines what agent type the crowd agent is
 
     protected void Start(){
         //moving = true;
@@ -25,26 +24,12 @@ public abstract class CrowdController : MonoBehaviour
         
     }
     protected void Update(){
-        if(Input.GetKeyDown("q")){
-            //Debug.Log("Q PRESSED");
-            Move();
-        }
         if(moving&&gameObject.GetComponent<NavMeshAgent>().pathStatus == NavMeshPathStatus.PathInvalid)
         {
             //Debug.Log("Path invalid, updating");
             Move();
         }
     }
-    /*void OnTriggerEnter(Collider other)
-    {
-        //If the other object is a bus and it is not at maximum capacity, get on and destroy this object
-        if(other.gameObject.tag =="Bus" && !(other.gameObject.GetComponent<BusController>().atMaxCapacity()))
-        {
-            other.gameObject.GetComponent<BusController>().getOn();
-            Destroy(gameObject);
-            
-        } 
-    } */
 
     // Sets the final place the agent wants to go
     protected abstract void setFinalDestination();
@@ -52,35 +37,13 @@ public abstract class CrowdController : MonoBehaviour
         return finalDestination;
     }
 
-    //Updates where the agent is currently wanting to go
-    public void setCurrDestination(){
-        //Default to final Destination
-
-        //If crowd seen is fleeing, flee in the same direction
-
-    }
     protected virtual void Move(){
-        //if there are people around moving, update the speed
-        //if there are people around moving, update the angle
         gameObject.GetComponent<NavMeshAgent>().SetDestination(finalDestination);
-        //Debug.Log("Next spot "+(gameObject.GetComponent<NavMeshAgent>().nextPosition-gameObject.transform.position).ToString());
-        /* if(crowdinnoi.Count>0&&gameObject.GetComponent<NavMeshAgent>().nextPosition!=Vector3.zero){
-            Vector3 result = gameObject.GetComponent<NavMeshAgent>().nextPosition;//new Vector3(0f,0f,0f);
-            foreach(GameObject crowd in crowdinnoi)
-            {
-                result += (crowd.GetComponent<NavMeshAgent>().nextPosition)/(Vector3.Distance(gameObject.transform.position,crowd.gameObject.transform.position));
-            }
-            gameObject.GetComponent<NavMeshAgent>().SetDestination(result);
-}*/
-
-
     }
 
-    //Destination 1 via granville: -732.9075 21.81492 -448.9697
-    //Destination 2 via waterfront station: 175.7381 16.23377 584.8232
-    //Destination 3 via granville station: -129.7943 32.36957 350.8734
-    //Destination 4 via Stadium-chinatown station: -129.8107 32.37526 350.7296
 
+
+    //Get the nearest area of interest
     protected GameObject getNearestAOI()
     {
         float shortestdistance = Mathf.Infinity;
@@ -111,40 +74,52 @@ public abstract class CrowdController : MonoBehaviour
             Destroy(gameObject);
         } 
     }*/
+    //get the value that this agent represents
     public int getValue()
     {
         return value;
     }
 
+    //A method that is called when another crowd agent enters the neighbourhood of interaction
     public void crowdEnterNOI(GameObject crowd)
     {
+        //add that crowd agent to the crowd in neighbourhood of interaction list
         crowdinnoi.Add(crowd);
+        //if the other crowd agent is moving and this object is not moving
         if(crowd.GetComponent<CrowdController>().isMoving()&&!moving)
         {
+            //begin moving
             moving = true;
             Move();
         }
         //Debug.Log("Entered NOI!");
     }
+    //a method that is called when another crowd agent exits the neighbourhood of interaction
     public void crowdExitNOI(GameObject crowd)
     {
+        //remove the leaving crowd agent from the list
         crowdinnoi.Remove(crowd);
+        //if the other crowd agent is moving and this object is not moving
         if(crowd.GetComponent<CrowdController>().isMoving()&&!moving)
         {
+            //begin moving
             moving = true;
             Move();
         }
         //Debug.Log("Exited NOI!");
     }
+    //gets the crowd type
     public CrowdType getCrowdType()
     {
         return ctype;
     }
+    //a method to be called when police come into contact with this object, makes this object start moving
     public void policeContact()
     {
         moving = true;
         Move();
     }
+    //gets if this object is moving
     public bool isMoving()
     {
         return moving;

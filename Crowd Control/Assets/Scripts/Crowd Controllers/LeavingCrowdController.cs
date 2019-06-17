@@ -16,14 +16,10 @@ public class LeavingCrowdController : CrowdController
     }
     protected void Start()
     {
-        
         setFinalDestination();
         base.Start();
-        
     }
-
-    // Update is called once per frame
-
+    
     protected override void setFinalDestination()
     {
         float rand = Random.value*exits.Length;

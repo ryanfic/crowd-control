@@ -12,9 +12,4 @@ public class BusStopGenerator : MonoBehaviour
         //Instantiate(BusTemplate,VancouverCityCenterStationLocation,Quaternion.identity);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

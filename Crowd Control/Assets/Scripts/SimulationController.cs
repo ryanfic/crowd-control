@@ -88,42 +88,78 @@ public class SimulationController : MonoBehaviour
         //StartCoroutine(delayAddPL(new Vector3((float)(-23.6),28.0f,(float)(9.8)),rot,3,waypoints,delays));//second simulation pl location to test moving around pl
 
         Queue<float> delays = new Queue<float>();
-          //FIRST STREET: Start PL from -34.7, 35.0, 97.0   Move to:  -154.7, 26.4, -24.1
-         //New destination: (-170.8, 24.7, -73.6)
+          //FIRST STREET: Start PL from -34.7, 35.0, 97.0  
+         //destination: (-170.8, 24.7, -73.6)
          Queue<Vector3> fwaypoints = new Queue<Vector3>();
-        //original waypoint
+        //original waypoint towards VPL
         //fwaypoints.Enqueue(new Vector3(-154.7f, 26.4f, -24.1f));
-        //Updated trial location
-        fwaypoints.Enqueue(new Vector3(-199.4f, 24.7f, -69.3f));
-        //second waypoint
+
+        //second waypoint towards VPL
         //fwaypoints.Enqueue(new Vector3(-170.8f, 24.7f, -73.6f));
-        Quaternion frot = Quaternion.Euler(0f,-135.2f,0f);
-        StartCoroutine(delayAddPL(new Vector3(-40.3f,30.9f,89.5f),frot,3,fwaypoints,delays));
+
+        //Updated trial location towards VPL
+        //fwaypoints.Enqueue(new Vector3(-199.4f, 24.7f, -69.3f));
+
+        //End point away from VPL
+        fwaypoints.Enqueue(new Vector3(45.2f, 31.2f, 177.1f));
+
+        //rotation for going towards VPL
+        //Quaternion frot = Quaternion.Euler(0f,-135.2f,0f);
+        //rotation for going away from VPL
+        Quaternion frot = Quaternion.Euler(0f,44.636f,0f);
         
 
-        //coliders 32 2 5.5
+        //Location moving towards VPL
+        //StartCoroutine(delayAddPL(new Vector3(-40.3f,30.9f,89.5f),frot,3,fwaypoints,delays));
+        // Location moving away from VPL
+        //StartCoroutine(delayAddPL(new Vector3(-147.9f, 26.8f, -18.4f),frot,3,fwaypoints,delays));
+        
 
-        /* //SECOND STREET: Start PL from -78.3, 35.0, 123.5   Move to:  -197.7, 27.4, -3.4
+         //SECOND STREET: Start PL from -78.3, 35.0, 123.5   Move to:  -197.7, 27.4, -3.4
          Queue<Vector3> swaypoints = new Queue<Vector3>();
-        //original location
+        //original location towards VPL
         //swaypoints.Enqueue(new Vector3(-197.7f, 27.4f, -3.4f));
-        //Updated trial location
-        swaypoints.Enqueue(new Vector3(-234.0f, 25.7f, -33.6f));
-        Quaternion srot = Quaternion.Euler(0f,-135.2f,0f);
-        StartCoroutine(delayAddPL(new Vector3(-78.3f, 32.5f, 123.5f),srot,3,swaypoints,delays));*/
+        //Updated trial location towards VPL
+        //swaypoints.Enqueue(new Vector3(-234.0f, 25.7f, -33.6f));
+
+        //End point away from VPL
+        swaypoints.Enqueue(new Vector3(12.4f, 31.5f, 216.8f));
+
+        //rotation for going towards VPL
+        //Quaternion srot = Quaternion.Euler(0f,-135.2f,0f);
+        //rotation for going away from VPL
+        Quaternion srot = Quaternion.Euler(0f,44.636f,0f);
+
+        //Location moving towards VPL
+        //StartCoroutine(delayAddPL(new Vector3(-78.3f, 32.5f, 123.5f),srot,3,swaypoints,delays));
+        //Location moving away from VPL
+        //StartCoroutine(delayAddPL(new Vector3(-187.1f, 28.0f, 14.8f),srot,3,swaypoints,delays));
 
          //THIRD STREET: Start PL from -94.2, 35.0, 176.8   Move to:  -221.9, 29.1, 37.2
-        //New destination: (-324.5, 26.9, -17.3)
+         //New destination: (-324.5, 26.9, -17.3)
         Queue<Vector3> twaypoints = new Queue<Vector3>();
-        //first trial location
-        //twaypoints.Enqueue(new Vector3(-212.3f, 29.1f, 56.5f));
-        //updated trial location
-        twaypoints.Enqueue(new Vector3(-292.8f, 26.1f, -30.1f));
-        //Move out of the way
-        //twaypoints.Enqueue(new Vector3(-324.5f, 26.9f, -17.3f));
-        Quaternion trot = Quaternion.Euler(0f,-135.2f,0f);
-        StartCoroutine(delayAddPL(new Vector3(-113.6f, 33.2f, 158.2f),trot,3,twaypoints,delays));
 
+        //first trial location toward VPL
+        //twaypoints.Enqueue(new Vector3(-212.3f, 29.1f, 56.5f));
+        //updated trial location toward VPL
+        //twaypoints.Enqueue(new Vector3(-292.8f, 26.1f, -30.1f));
+        //Move out of the way toward VPL
+        //twaypoints.Enqueue(new Vector3(-324.5f, 26.9f, -17.3f));
+
+        //End point away from VPL
+        twaypoints.Enqueue(new Vector3(5.9f, 30.6f, 275.3f));
+        
+
+        //rotation for going towards VPL
+        //Quaternion trot = Quaternion.Euler(0f,-135.2f,0f);
+        //rotation for going away from VPL
+        Quaternion trot = Quaternion.Euler(0f,44.636f,0f);
+
+        //Location moving towards VPL
+        //StartCoroutine(delayAddPL(new Vector3(-113.6f, 33.2f, 158.2f),trot,3,twaypoints,delays));
+        //Location moving away from VPL
+        StartCoroutine(delayAddPL(new Vector3(-221.5f, 29.2f, 44.5f),trot,3,twaypoints,delays));
+        
         
         Invoke("addAOI",0);
         //Invoke("MovePLs",4);
@@ -135,50 +171,7 @@ public class SimulationController : MonoBehaviour
     void Update()
     {
         
-        /*f(Input.GetMouseButtonDown(0))
-        {
-            if(makingPL)
-            {
-                Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
-			    RaycastHit hit;
-
-			    if(Physics.Raycast(ray, out hit))
-                {
-                    PLpoint[PLpointcount] = hit.point;
-                    print(PLpoint[PLpointcount]);
-                    PLpointcount++;
-                }
-                if(PLpointcount == 2)
-                {
-                    addPL();
-                    //print(PLpointcount);
-                    resetPLPoint();
-                    //print(PLpointcount);
-                }
-            }
-            else
-            {
-                foreach(GameObject line in PoliceLines)
-                {
-                    line.GetComponent<PoliceLineController>().moveToMousePosition(maincam);
-                }
-                PoliceLine.GetComponent<PoliceLineController>().moveToMousePosition(maincam);
-            }
-            
-            //PoliceLine.GetComponent<PoliceLineController>().Move();
-        }
-        /*foreach(GameObject line in PoliceLines)
-        {
-                    if(line.GetComponent<PoliceLineController>().isMoving())
-                    {
-                        line.GetComponent<PoliceLineController>().Move();
-                    }
-        }
-        if(PoliceLine.GetComponent<PoliceLineController>().isMoving())
-        {
-
-            PoliceLine.GetComponent<PoliceLineController>().Move();
-        }*/
+        
         if(Input.GetKeyDown("n"))
         {
             resetPLPoint();
@@ -187,42 +180,6 @@ public class SimulationController : MonoBehaviour
                     line.GetComponent<PoliceLineController>().moveToNearestBusStop(BusStops);
             }
         }
-        if(Input.GetKeyDown("o")) 
-        {
-            resetPLPoint();
-			Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-            Physics.Raycast(ray, out hit);
-			if(Physics.Raycast(ray, out hit)) {
-
-				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
-                    Debug.Log("Crowd agent created.");
-                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y+1,hit.point.z);
-					addCrowd(spawnLocation);
-				}
-			}
-            else{
-                Debug.Log("didnt hit");
-            }
-		}
-        if(Input.GetKeyDown("k")) 
-        {
-            resetPLPoint();
-			Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-            Physics.Raycast(ray, out hit);
-			if(Physics.Raycast(ray, out hit)) {
-
-				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
-                    Debug.Log("Spawning Crowd of Crowd Agents.");
-                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y+1,hit.point.z);
-					spawnCrowdAroundSpot(spawnLocation,20,10);
-				}
-			}
-            else{
-                Debug.Log("didnt hit");
-            }
-		}
         if(Input.GetKeyDown("i")) 
         {
             resetPLPoint();
@@ -239,30 +196,7 @@ public class SimulationController : MonoBehaviour
 				}
 			}
 		}
-        if(Input.GetKeyDown("p"))
-        {
-            //makingPL = true;
-            resetPLPoint();
-			Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
 
-			if(Physics.Raycast(ray.origin, ray.direction, out hit)) {
-
-				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
-
-					Debug.Log("Police Line Created.");
-                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y,hit.point.z);
-					GameObject nline = addPL(spawnLocation);
-                    getNumPolice(nline);
-				}
-			}
-        }
-        /* Used for debugging stuff
-        if(Input.GetKeyDown("q"))
-        {
-            Debug.Log()
-            getTime();
-        }*/
         if(Input.GetKeyDown("w"))
         {
             printMouseLocation();
@@ -273,69 +207,7 @@ public class SimulationController : MonoBehaviour
                 Debug.Log("Started moving through waypoints at: " + Time.time);
                 pl.GetComponent<PoliceLineController>().moveToNextWaypoint();
             }
-            /*For testing hitGroundAtPos
-            Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-
-			if(Physics.Raycast(ray, out hit)) {
-
-				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
-                    Debug.Log("Attempting hitGroundAtPos from " + hit.point);
-                    Vector3 spawnLocation = new Vector3(hit.point.x,hit.point.y,hit.point.z);
-                    hitGroundAtPos(hit.point);
-				}
-			}*/
-            /* *
-            resetPLPoint();
-            foreach(GameObject line in PoliceLines)
-            {
-                Vector3 target = line.transform.localPosition;
-                float delay = 3f;
-                for(int i=1;i<=3;i++)
-                {
-                    target.x+=10;
-                    line.GetComponent<PoliceLineController>().addWaypoints(target,delay*i);
-                }
-                
-                for(int i=0;i<3;i++)
-                {
-                    line.GetComponent<PoliceLineController>().delayedMoveToNextWaypoint();
-                    /*Invoke("PoliceLines["+i+"].GetComponent<PoliceLineController>().moveToGivenPosition",delay*i);*/
-               // }
-                
-            //}
         }
-        /* Under construction
-        if(Input.GetKeyDown("r"))
-        {
-            foreach(GameObject pl in PoliceLines){
-                pl.GetComponent<PoliceLineController>().squishTogether();
-            }
-        }
-        if(Input.GetKeyDown("t"))
-        {
-            Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-
-			if(Physics.Raycast(ray, out hit)) {
-
-				if(hit.transform.gameObject.layer != LayerMask.NameToLayer("Buildings")) {
-                    Debug.Log("Attempting hitGroundAtPos from " + hit.point);
-                    foreach(GameObject pl in PoliceLines)
-                     pl.GetComponent<PoliceLineController>().moveToGivenPosition(hit.point);
-				}
-			}
-        }*/
-        /*if(Input.GetKeyDown("q"))
-        {
-            NavMeshAgent agent;
-            foreach(GameObject c in crowdlist){
-                Vector3 target = c.transform.position;
-                target.x +=5;
-                agent = c.GetComponent<NavMeshAgent>();
-                agent.SetDestination(target);
-            }
-        }*/
     }
     void addAOI(){
         Vector3 pos = new Vector3(-117.3f,33f,103.5f);

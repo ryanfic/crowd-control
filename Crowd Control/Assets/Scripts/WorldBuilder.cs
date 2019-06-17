@@ -8,53 +8,39 @@ using UnityEditor;
 
 public class WorldBuilder : MonoBehaviour {
 
-	//public NavMeshSurface policelineSurface;
-	private string navMeshPath = "Assets/NavMesh/WRLD_NavMesh.asset";
-	public NavMeshSurface crowdSurface;
-	//public NavMeshSurface vehicleSurface;
+	private string navMeshPath = "Assets/NavMesh/WRLD_NavMesh.asset"; //The location of the stored Nav Mesh, if it is created
+	public NavMeshSurface crowdSurface; //The nav mesh
 
-	private bool firstBuild;
 
 	// Use this for initialization
 	void Start () {
-		firstBuild = true;
 		Invoke("buildTheMesh",1.5f);
 		Invoke("attachMeshColliders",1.5f);
 
 	}
-	// Update is called once per frame
-	/*void Update () {
 
-		if(Input.GetKeyDown("b")) { // Press "b" to rebuild NavMesh
-
-			if(firstBuild) {
-				SetNavMeshSettings();
-			}
-
-			StartCoroutine(BuildNavmesh(policelineSurface));
-			//StartCoroutine(BuildNavmesh(vehicleSurface));
-			Debug.Log("Currently updating NavMeshSurface.");
-		}
-		
-	} */
 	void buildTheMesh(){
-		if(firstBuild) {
-			SetNavMeshSettings();
-		}
+		//sets the nav mesh settings of WRLD object/children
+		SetNavMeshSettings();
+		//Loads the nav mesh data
 		NavMeshData meshdata = (NavMeshData)AssetDatabase.LoadAssetAtPath(navMeshPath,typeof(NavMeshData));
+		//if the nav mesh data doesn't exist
 		if(meshdata==null)
 		{
+			
 			Debug.Log("Currently updating NavMeshSurface.");
+			//creates a new nav mesh surface
 			StartCoroutine(BuildNavmesh(crowdSurface));
 		}
+		//if the nav mesh data exists
 		else{
+			//add the nav mesh data to the nav mesh
 			crowdSurface.navMeshData = meshdata;
-			// call AddData() to finalize it
         	crowdSurface.AddData();
 		}
-
-		
 	}
+
+	//adds mesh colliders to game objects
 	void attachMeshColliders(){
 		GameObject go;
 		Debug.Log("Currently adding Mesh Colliders.");
@@ -74,19 +60,12 @@ public class WorldBuilder : MonoBehaviour {
             trans.gameObject.layer = layerNum;
         }
 	}
-
+	//sets the nav mesh settings for the WRLD object and its children
 	private void SetNavMeshSettings() {
 		// Duplicate buildings to make "floor" inside building meshes
 		Transform parent = GameObject.Find("Root").transform;
 		GameObject buildings = GameObject.Find("Buildings");
-		//GameObject floor = Object.Instantiate(buildings, parent);
-		//floor.name = "Floor";
-		//floor.transform.localScale = new Vector3(0.99f, 0.265f, 0.99f);
 
-		// Sets WrldMap and all children to navigation static
-		//foreach(Transform trans in gameObject.GetComponentsInChildren<Transform>(true)) {
-        	//GameObjectUtility.SetStaticEditorFlags(trans.gameObject, StaticEditorFlags.NavigationStatic);
-        //}
 
 		// Puts terrain, roads, and buildings into proper layers
 		WorldBuilder.SetLayerRecursively("Terrain", 11);
@@ -97,31 +76,6 @@ public class WorldBuilder : MonoBehaviour {
         buildings.AddComponent<NavMeshModifier>();
 		buildings.GetComponent<NavMeshModifier>().overrideArea = true;
         buildings.GetComponent<NavMeshModifier>().area = NavMesh.GetAreaFromName("Not Walkable");
-
-		// Discludes "floor" from being walkable for NavMesh Agent
-        //floor.AddComponent<NavMeshModifier>();
-        //floor.GetComponent<NavMeshModifier>().overrideArea = true;
-        //floor.GetComponent<NavMeshModifier>().area = NavMesh.GetAreaFromName("Not Walkable");
-
-		/*Debug.Log("NavMeshSurface built for: " + NavMesh.GetSettingsNameFromID(0));
-
-		// Sets settings for police and crowd NavMeshAgents
-		NavMeshBuildSettings settings = NavMesh.GetSettingsByID(0);
-		settings.agentClimb = 0.4f;
-		settings.agentHeight = 2;
-		settings.agentRadius = 0.5f;
-		settings.agentSlope = 45;
-		//settings.agentTypeID = 0; // Needs to match NavMeshAgentID
-		settings.minRegionArea = 1000; // Find a good value
-		//settings.overrideTileSize
-		//settings.overrideVoxelSize
-		//settings.tileSize
-		//settings.voxelSize*/
-
-		firstBuild = false;
-
-		//surface.BuildNavMesh();
-		//Debug.Log("Built NavMeshSurface.");
 	}
 
 	// called by startcoroutine whenever you want to build the navmesh
@@ -142,16 +96,17 @@ public class WorldBuilder : MonoBehaviour {
  
         // you need to save the baked data back into the surface
         surface.navMeshData = data;
+
+		// save the nav mesh data
 		SaveNavMeshData(data);
  
         // call AddData() to finalize it
         surface.AddData();
     }
+	//saves the nav mesh data
 	void SaveNavMeshData(NavMeshData data){
 		AssetDatabase.CreateAsset(data, navMeshPath);
 	}
-	
-	//void LoadNavMesh(NavMeshSurface surface)
  
     // creates the navmesh data
     static NavMeshData InitializeBakeData(NavMeshSurface surface) {

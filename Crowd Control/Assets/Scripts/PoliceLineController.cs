@@ -5,23 +5,24 @@ using UnityEngine.AI;
 
 public class PoliceLineController : MonoBehaviour
 {
-    public GameObject policeTemplate;
-    public IList<GameObject>  police = new List<GameObject>();
+    public GameObject policeTemplate; //the template for the police, used to generate the police in the line
+    public IList<GameObject>  police = new List<GameObject>(); // the list of the police in the line
 
-    private int numPolice=0;
-    public Vector3 targetPosition;
+    private int numPolice=0; // the number of police in the line
+    public Vector3 targetPosition; // used in non nav mesh agent movement
 
-    private float targetAccuracy = 5f; // How close the object has to get to the target before it says it has reached it
+    private float targetAccuracy = 5f; // How close the object has to get to the target before it says it has reached it, used in non nav mesh agent movement
 
-    public float rotSpeed = 5;
-    public float speed = 10;
-    public float overlap = 0.1f;
-    Vector3 lookAtTarget;
-    Quaternion lineRot;
-    private NavMeshAgent agent;
-    public bool moving = false;
+    public float rotSpeed = 5; //used in non nav mesh agent movement
+    public float speed = 10; // used in non nav mesh agent movement
+    Vector3 lookAtTarget; // used in non nav mesh agent movement
+    Quaternion lineRot; //used in non nav mesh agent movement
+    public bool moving = false; //used in non nav mesh agent movement
+    public float overlap = 0.1f; // the overlap of the police in the line, to ensure the crowd doesnt fall through the line as they are pushed
 
-    private float minLength=10f;
+    private NavMeshAgent agent; //used for nav mesh agent movement
+
+
 
     private Queue<Vector3> waypoints = new Queue<Vector3>();
     private Queue<float> waypointDelay = new Queue<float>();
@@ -31,15 +32,9 @@ public class PoliceLineController : MonoBehaviour
     {
         SpawnPolice();
         agent = GetComponent<NavMeshAgent>();
-        //Vector3 pos = transform.position;
-        //pos.y = 0;
-        //transform.position = pos;
     }
 
     void Update(){
-        /* if(moving){
-            Move();
-        }*/
         //if the agent has reached its destination
         if(reachedNextWaypoint())
         {
@@ -59,13 +54,11 @@ public class PoliceLineController : MonoBehaviour
                 PoliceController pc;
                 foreach(GameObject p in police)
                 {
-                        pc = p.GetComponent<PoliceController>();
+                    pc = p.GetComponent<PoliceController>();
                     pc.enableNMObstacle();
                 }
             }
         }
-                    
-        
     }
 
     private void SpawnPolice()
@@ -103,6 +96,7 @@ public class PoliceLineController : MonoBehaviour
             count++;
         } */
     }
+    //check if the police line has reached the next waypoint
     private bool reachedNextWaypoint()
     {
         //if the agent has reached its destination
@@ -118,28 +112,15 @@ public class PoliceLineController : MonoBehaviour
         }
         return false;
     }
+
+    //move the police line to the nearest bus stop
     public void moveToNearestBusStop(IList<GameObject> stops)
     {
         GameObject targetStop = getNearestBusStop(stops);
         moveToGivenPosition(targetStop.transform.position);
-        //To get time when start moving to bus stop
-        //Debug.Log("Started moving at " +Time.time);
-
-
-        //Using my movement method
-        //setTargetPosition(targetStop.transform.position);
-        
-        //setTargetPosition(targetStop.transform.position);
-        //targetPosition = hit.point;
-
-        //makes a target direction for the policeline to look at (using the ray x and z, but keeping the policeline's y value)
-        //lookAtTarget = new Vector3(targetPosition.x - transform.position.x, transform.position.y,targetPosition.z - transform.position.z);
-        //the rotation to the new target
-        //lineRot = Quaternion.LookRotation(lookAtTarget);
-        //set moving to true
-        //moving = true;
     }
 
+    //get the nearest bus stop
     private GameObject getNearestBusStop(IList<GameObject> stops)
     {
         float shortestdistance = Mathf.Infinity;
@@ -154,6 +135,7 @@ public class PoliceLineController : MonoBehaviour
         }
         return closeststop;
     }
+    //move the police line to the mouse's position
     public void moveToMousePosition(Camera cam)
     {
         Ray ray = /*Camera.main */cam.ScreenPointToRay(Input.mousePosition);
@@ -163,11 +145,11 @@ public class PoliceLineController : MonoBehaviour
         {
 
             if(hit.collider.tag == "Ground"||hit.collider.tag =="BusStop"){
-                //setTargetPosition(hit.point);
                 moveToGivenPosition(hit.point);
             }
         }
     }
+    //move the police line
     public void moveToGivenPosition(Vector3 pos)
     {
         PoliceController pc;
@@ -176,9 +158,11 @@ public class PoliceLineController : MonoBehaviour
             pc = p.GetComponent<PoliceController>();
             pc.disableNMObstacle();
         }
-        //setTargetPosition(pos);
-        AgentMove(pos);
+        //setTargetPosition(pos); //use non-nav mesh agent based movement
+        AgentMove(pos); //use nav mesh agent based movement
     }
+
+    //begins moving the police line using non nav mesh agent movement
     private void setTargetPosition(Vector3 targetpos)
     {
         targetPosition = targetpos;
@@ -192,24 +176,12 @@ public class PoliceLineController : MonoBehaviour
         //set moving to true
         moving = true;
     }
+    //move to the next waypoint
     public void moveToNextWaypoint(){
-            //Debug.Log("Next waypoint: " + waypoints.Peek()+", started moving at: " +Time.time);
             moveToGivenPosition(waypoints.Dequeue());
     }
-    public void delayedMoveToNextWaypoint(){
-        moveToNextWaypoint();
-        if(waypoints.Count>0&&waypointDelay.Count>0){
-            float t = waypointDelay.Dequeue();
-            Invoke("delayedMoveToNextWaypoint",t);
-        }
-        /* else{
-            Debug.Log("Reached the destination!");
-        }*/
-    }
-    public void startDelayedMoveToNextWaypoint(float delay){
-        Invoke("delayedMoveToNextWaypoint", delay);
-    }
 
+    //instantly move the police line to the next waypoint
     public void warpToNextWaypoint(){
             
             if(waypoints.Count>0&&waypointDelay.Count>0){
@@ -217,11 +189,13 @@ public class PoliceLineController : MonoBehaviour
                 waypointDelay.Dequeue();
             }
     }
+    //check if the police line is moving
     public bool isMoving()
     {
         return moving;
     }
 
+    //A non nav mesh agent method of moving
     public void Move()
     {
         //Rotate
@@ -232,7 +206,7 @@ public class PoliceLineController : MonoBehaviour
         //Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
         //Debug.Log("Attempting to elevate");
         //destination = correctElevation(destination);
-        transform.position = Vector3.MoveTowards(transform.position, /*destination*/targetPosition, speed * Time.deltaTime);;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);;
         //if the line has reached its target position, stop
         //may want a range instead of an exact location
         if(Vector3.Distance(transform.position,targetPosition)<targetAccuracy)
@@ -263,6 +237,7 @@ public class PoliceLineController : MonoBehaviour
         }
     }
 
+    //move police line using nav mesh agent
     public void AgentMove(Vector3 targetpos)
     {
         //Debug.Log("Moving");
@@ -270,9 +245,12 @@ public class PoliceLineController : MonoBehaviour
         agent.SetDestination(targetpos);
     }
 
+    //get the number of police agents in the police line
     public int getNumPolice(){
         return numPolice;
     }
+
+    //add multiple more waypoints and delays to the waypoints
     public void addWaypoints(Queue<Vector3> points,Queue<float> delays)
     {
         foreach(Vector3 point in points)
@@ -284,12 +262,22 @@ public class PoliceLineController : MonoBehaviour
             waypointDelay.Enqueue(delay);
         }
     }
+    //add a single waypoint and delay to that waypoint
     public void addWaypoints(Vector3 point, float delay)
     {
         waypoints.Enqueue(point);
         waypointDelay.Enqueue(delay);
     }
-    /* When things collide with the trigger on the Policeline*/
+
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if(collider.gameObject.layer ==19/*Lawful layer */||collider.gameObject.layer ==18 /*Follower layer */||collider.gameObject.layer==17/*Instigator layer */){
+            collider.gameObject.GetComponent<CrowdController>().policeContact();
+        }
+    }
+    //To be implemented later
+    /* When things are about to collide with the Policeline AKA when the police line needs to squishtogether*/
     //void OnCollisionEnter(Collision collision)
     //{
     //    if(collision.gameObject.layer ==13/*Police layer ||collision.gameObject.layer ==12 /*Crowd layer*/ ||collision.gameObject.layer==14/*PoliceLine layer*/ ){
@@ -316,37 +304,6 @@ public class PoliceLineController : MonoBehaviour
             /*squishTogether();
         }*/
     //}
-    void OnTriggerEnter(Collider collider)
-    {
-        //if(collider.gameObject.layer ==13/*Police layer */||collider.gameObject.layer ==12 /*Crowd layer */||collider.gameObject.layer==14/*PoliceLine layer */){
-            /*Debug.Log("Ignoring" + collision.gameObject.name);*/
-        //    Physics.IgnoreCollision(collider.gameObject.GetComponent<Collider>(),GetComponent<Collider>());
-        //}
-        //if(collider.gameObject.layer==9/*Building layer */)
-        //{
-         //   Debug.Log("Building triggered");
-        //    foreach(GameObject p in police)
-        //    {
-        //        Ray ray = new Ray(p.transform.position,gameObject.transform.forward);
-        //        RaycastHit hit;
-                /*Debug.DrawRay(pos,Vector3.down, Color.green, 500); */
-		//	    if(Physics.Raycast(ray, out hit, 1000)) {
-                /*Debug.Log("Hit"); */
-		//		if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Buildings")) {
-        //            Vector3 location = new Vector3(hit.point.x,hit.point.y,hit.point.z);
-        //            Debug.Log("Going to collide with a building!" + hit.point);
-                    /*Debug.Log("Hit " +hit.transform.gameObject.name +" at: " +location); */
-		//		}
-		//	}
-        //        Debug.DrawRay(p.transform.position,gameObject.transform.forward, Color.green, 500);
-         //   }
-        //}
-
-
-        if(collider.gameObject.layer ==19/*Lawful layer */||collider.gameObject.layer ==18 /*Follower layer */||collider.gameObject.layer==17/*Instigator layer */){
-            collider.gameObject.GetComponent<CrowdController>().policeContact();
-        }
-    }
     /*If the police line will collide with a Building (collision with a collider on building layer), shrink the line */
     public void squishTogether(){
         foreach(GameObject officer in police)
